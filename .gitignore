@@ -1,0 +1,4 @@
+.*.*.swp
+*.o
+kernel.bin
+os.iso
