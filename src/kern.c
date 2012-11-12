@@ -34,6 +34,7 @@ void kmain(void)
 	puts("done.\n");
 
 	__asm__("int $0x3");
+	__asm__("int $0x5");
 
 	for(;;);
 
