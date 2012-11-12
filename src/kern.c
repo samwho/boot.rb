@@ -2,6 +2,8 @@
 #include <misc.h>
 #include <screen.h>
 #include <multiboot.h>
+#include <idt.h>
+
 void kmain(void)
 {
 	extern unsigned int magic;
@@ -23,8 +25,15 @@ void kmain(void)
 	puthex(mbd->flags);
 	puts("\n");
 
-	puts("Initalising GDT...\n");
+	puts("Initalising GDT...");
 	gdtInit();
+	puts("done.\n");
+
+	puts("Initalising IDT...");
+	idtInit();
+	puts("done.\n");
+
+	__asm__("int $0x3");
 
 	for(;;);
 

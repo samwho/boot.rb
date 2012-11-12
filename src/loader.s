@@ -35,15 +35,11 @@ loader:
 
 	dd 0
 
-gdtloc_ equ 0xbad
-
 setGdt:
 	push eax
 	mov eax, [esp + 0x8]
 	lgdt [eax]
 	pop eax
-	mov eax, gdtloc_
-	sgdt [eax]
 	jmp 0x08:.reload_CS
 .reload_CS:
 	mov ax, 0x10
