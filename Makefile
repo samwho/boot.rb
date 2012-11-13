@@ -1,11 +1,11 @@
-CC	:= clang
+CC	:= gcc
 AS := nasm
 LD := ld
 QEMU := qemu
 SOURCE_SUFFIXES := '(' -name '*.c' -o -name '*.s' ')'
 SRCFILES  := $(shell find 'src' ${SOURCE_SUFFIXES})
 OBJFILES := $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCFILES)))
-CFLAGS := -std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -m32
+CFLAGS := -std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -m32 -O0
 LDFLAGS := -nostdlib -g -melf_i386
 ASFLAGS := -felf32 -g
 .PHONY: all clean qemu

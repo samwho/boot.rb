@@ -3,6 +3,8 @@
 #include <screen.h>
 #include <multiboot.h>
 #include <idt.h>
+#include <timer.h>
+#include <isr.h>
 
 void kmain(void)
 {
@@ -33,8 +35,12 @@ void kmain(void)
 	idtInit();
 	puts("done.\n");
 
-	__asm__("int $0x3");
-	__asm__("int $0x5");
+	puts("Initialising PIT...");
+	timerInit(1);
+	puts("done.\n");
+
+
+	__asm__("sti");
 
 	for(;;);
 

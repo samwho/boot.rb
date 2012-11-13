@@ -1,51 +1,66 @@
 #include <screen.h>
 
-uint16_t position = 0;
 uint16_t cursor_x,cursor_y = 0;
-uint8_t *video = (uint8_t *)0xB8000;
+uint16_t *video = (uint16_t *)0xb8000;
 uint8_t attr = 0x0F;
 
-void move_cursor(uint16_t crs_x, uint16_t crs_y)
+void scroll()
 {
-	uint16_t pos = 80*crs_y + crs_x;
+	uint16_t blank = 0x20 | (attr << 8);
+
+	if(cursor_y >= 25)
+	{
+		int i;
+		for(i = 0; i < 24*80; i++)
+		{
+			video[i] = video[i+80];
+		}
+
+		for(i = 24*80; i < 25*80; i++)
+		{
+			video[i+1]=blank;
+		}
+
+		cursor_y = 24;
+	}
+}
+
+void move_cursor()
+{
+	uint16_t pos = 80*cursor_y + cursor_x;
 	outb(0x3D4, 0x0F);
 	outb(0x3D5, (uint8_t)(pos&0xFF));
 	outb(0x3D4, 0x0E);
 	outb(0x3D5, (uint8_t)((pos>>8)&0xFF));
-	position = pos*2;
-	cursor_x = crs_x;
-	cursor_y = crs_y;
 }
 
 void cls()
 {
 	memset(video, 0, 80*25);
-}
-
-void increment_cursor()
-{
-	if(cursor_x != 80) cursor_x++;
-	else if (cursor_y != 25)
-	{
-		cursor_x = 0;
-		cursor_y++;
-	}
-	else 
-	{
-		/* Handle this in a bit */
-	}
-	move_cursor(cursor_x, cursor_y);	
+	cursor_x = 0;
+	cursor_y = 0;
+	move_cursor();
 }
 
 void putc(char c)
 {
 	if (c == '\n') {
-		move_cursor(0, ++cursor_y);
+		cursor_x = 0;
+		cursor_y++;
+		move_cursor();
 		return;
 	}
-	video[position] = c;
-	video[++position] = attr;
-	increment_cursor();
+	uint16_t attribute = attr << 8;
+	uint16_t *position = video + ( cursor_y * 80 + cursor_x);
+	*position = c | attribute;
+	if(cursor_x != 80) cursor_x++;
+	else 
+	{
+		cursor_x = 0;
+		cursor_y++;
+	}
+	scroll();
+	move_cursor();
 }
 
 void puts(char *s)
