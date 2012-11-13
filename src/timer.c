@@ -1,13 +1,12 @@
 #include <timer.h>
+#include <text.h>
 
 uint32_t tick = 0;
 
 void timer_callback(registers_t regs)
 {
 	tick++;
-	puts("Tick: ");
-	puthex(tick);
-	puts("\n");
+	printf("Tick: %d \n", tick);
 }
 
 void timerInit(uint32_t freq)
