@@ -49,6 +49,13 @@ void putc(char c)
 		cursor_y++;
 		move_cursor();
 		return;
+	} 
+	else if (c == '\b')
+	{
+		if(cursor_x > 0)
+			cursor_x--;
+		move_cursor();
+		return;
 	}
 	uint16_t attribute = attr << 8;
 	uint16_t *position = video + ( cursor_y * 80 + cursor_x);

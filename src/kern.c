@@ -5,6 +5,8 @@
 #include <idt.h>
 #include <timer.h>
 #include <isr.h>
+#include <keyboard.h>
+#include <text.h>
 
 void kmain(void)
 {
@@ -21,11 +23,7 @@ void kmain(void)
 
 	puts("Welcome to Kernel!\n");
 
-	puts("Multiboot command line: ");
-	puts((char *)mbd->cmdline);
-	puts("\nMultiboot flags: ");
-	puthex(mbd->flags);
-	puts("\n");
+	printf("Multiboot command line: %s \nMultiboot flags: 0x%x\n", mbd->cmdline, mbd->flags);
 
 	puts("Initalising GDT...");
 	gdtInit();
@@ -39,8 +37,19 @@ void kmain(void)
 	timerInit(1);
 	puts("done.\n");
 
+	puts("Initialising keyboard...");
+	keyboardInit();
+	puts("done.\n");
+
 
 	__asm__("sti");
+
+	while(1)
+	{
+		char *keys;
+		if(readBuffer(1, keys))
+			printf("%c", keys[0]);
+	}
 
 	for(;;);
 
