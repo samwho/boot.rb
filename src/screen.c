@@ -18,7 +18,7 @@ void scroll()
 
 		for(i = 24*80; i < 25*80; i++)
 		{
-			video[i+1]=blank;
+			video[i]=blank;
 		}
 
 		cursor_y = 24;
@@ -48,6 +48,7 @@ void putc(char c)
 		cursor_x = 0;
 		cursor_y++;
 		move_cursor();
+		scroll();
 		return;
 	} 
 	else if (c == '\b')
