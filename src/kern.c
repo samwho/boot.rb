@@ -51,7 +51,9 @@ void kmain(void)
 		if(strcmp(cmd, "test") == 0)
 			printf("ERROR: Test failed.\n");
 		else if (strcmp(cmd, "help") == 0)
-			printf("COMMANDS:\nhelp - This command.\ntest - A useful test.\n");
+			printf("COMMANDS:\nhelp - This command.\ntest - A useful test.\nreset - Resets the CPU.\n");
+		else if (strcmp(cmd, "reset") == 0)
+			outb(0x64, 0xFE);
 		else 
 			printf("ERROR: Command not recognised. Please blow into the cartridge and try again.\n");
 
