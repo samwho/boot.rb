@@ -22,3 +22,5 @@ int vprintf(IN const char *fmt, va_list ap);
 int vsprintf(OUT char *str, IN const char *fmt, va_list ap);
 int vsnprintf(OUT char *str, IN size_t size, IN const char *fmt,
 				IN va_list ap);
+
+int strcmp(char *a, char *b);

@@ -10,6 +10,7 @@ void isr_handler(registers_t regs)
 	puts("Recieved interrupt number ");
 	puthex(regs.int_no);
 	puts("\n");
+	for(;;);
 }
 
 void register_interrupt_handler(uint8_t n, isr_t handler)

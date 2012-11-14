@@ -40,3 +40,27 @@ uint32_t readBuffer(int len, char *out)
 	}
 	return 0;
 }
+
+char *readUntilReturn()
+{
+	char *buff;
+	char currentChar = 0;
+	uint32_t i = 0;
+	while(currentChar != '\n')
+	{
+		if(readBuffer(1, &currentChar)) {
+			if(currentChar != '\b') {
+				putc(currentChar);
+				buff[i] = currentChar;
+				i++;
+			}
+			else
+			{
+				putc(currentChar);
+				i--;
+			}
+		}
+	}
+	buff[i-1] = '\0';
+	return buff;
+}

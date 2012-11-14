@@ -363,3 +363,15 @@ reset:
 			str[size] = '\0';
 	return len;
 }
+
+int strcmp(char *a, char *b)
+{
+	int i = 0;
+	while (a[i] != 0 || b[i] != 0)
+	{
+		if(a[i] != b[i])
+			return 1;
+		i++;
+	}
+	return 0;
+}

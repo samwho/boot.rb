@@ -46,9 +46,15 @@ void kmain(void)
 
 	while(1)
 	{
-		char *keys;
-		if(readBuffer(1, keys))
-			printf("%c", keys[0]);
+		puts("# ");
+		char *cmd = readUntilReturn();
+		if(strcmp(cmd, "test") == 0)
+			printf("ERROR: Test failed.\n");
+		else if (strcmp(cmd, "help") == 0)
+			printf("COMMANDS:\nhelp - This command.\ntest - A useful test.\n");
+		else 
+			printf("ERROR: Command not recognised. Please blow into the cartridge and try again.\n");
+
 	}
 
 	for(;;);
