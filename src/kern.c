@@ -7,6 +7,7 @@
 #include <isr.h>
 #include <keyboard.h>
 #include <text.h>
+#include <memory.h>
 
 void kmain(void)
 {
@@ -41,19 +42,26 @@ void kmain(void)
 	keyboardInit();
 	puts("done.\n");
 
+	print_mmap_info(mbd);
 
 	__asm__("sti");
 
+	char *cmd = "";
 	while(1)
 	{
 		puts("# ");
-		char *cmd = readUntilReturn();
+		cmd = readUntilReturn();
 		if(strcmp(cmd, "test") == 0)
 			printf("ERROR: Test failed.\n");
 		else if (strcmp(cmd, "help") == 0)
 			printf("COMMANDS:\nhelp - This command.\ntest - A useful test.\nreset - Resets the CPU.\n");
 		else if (strcmp(cmd, "reset") == 0)
 			outb(0x64, 0xFE);
+		else if (strcmp(substr(cmd, 4), "mmap") == 0)
+		{
+			printf("mmap no. %c\n", cmd[5]);
+			print_mmap_entry(mbd, cmd[5] - 48);
+		}
 		else 
 			printf("ERROR: Command not recognised. Please blow into the cartridge and try again.\n");
 

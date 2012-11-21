@@ -43,7 +43,7 @@ uint32_t readBuffer(int len, char *out)
 
 char *readUntilReturn()
 {
-	char *buff;
+	char *buff = "";
 	char currentChar = 0;
 	uint32_t i = 0;
 	while(currentChar != '\n')
