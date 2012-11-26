@@ -42,7 +42,9 @@ void kmain(void)
 	keyboardInit();
 	puts("done.\n");
 
-	print_mmap_info(mbd);
+	puts("Initialising memory manager...");
+	mm_init(0xDEADBEEF);
+	puts("done.\n");
 
 	__asm__("sti");
 
@@ -57,6 +59,13 @@ void kmain(void)
 			printf("COMMANDS:\nhelp - This command.\ntest - A useful test.\nreset - Resets the CPU.\n");
 		else if (strcmp(cmd, "reset") == 0)
 			outb(0x64, 0xFE);
+		else if (strcmp(cmd, "malloc") == 0)
+			printf("Mallocing one 4k block: 0x%x", malloc(4096));
+		else if (strcmp(cmd, "memreset") == 0)
+		{
+			printf("Resetting heap\n.");
+			mm_init(0xDEADBEEF);
+		}
 		else if (strcmp(substr(cmd, 4), "mmap") == 0)
 		{
 			printf("mmap no. %c\n", cmd[5]);
