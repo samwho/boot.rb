@@ -10,6 +10,10 @@ char *substr(char *str, int len);
 const char* begin(const char* str);
 const char* end(const char* str);
 
+int strncmp(const char *a, const char *b, size_t n);
+char *strchr(const char *s, int c);
+char *strcat(char *dest, const char *src);
+
 int memcmp(const void *s1, const void *s2, size_t n);
 
 #endif /* STRING_H */

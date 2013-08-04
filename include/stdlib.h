@@ -19,7 +19,8 @@
 /* atexit(fn): run fn() at exit */
 //int atexit(void (*)(void));
 /* exit(n): exit with status code of n */
-//void exit(int);
+void exit(int);
+void abort(void);
 
 void *malloc(size_t);
 void *calloc(size_t, size_t);
@@ -32,7 +33,7 @@ void free(void *);
 /* atof(str): return a double containing the numeric equivalent of str */
 //double atof(const char *);
 /* atoi(str): return an integer containing the numeric equivalent of str */
-//int atoi(const char *);
+int atoi(const char *);
 /* atol(str): return a long containing the numeric equivalent of str */
 //long atol(const char *);
 /* atoll(str): return a long long containing the numeric equivalent of str */

@@ -43,6 +43,43 @@ char *substr(char *str, int len)
 	return res;
 }
 
+char *strchr(const char *s, int c)
+{
+	while (*s++ != c)
+		;
+
+	return s;
+}
+
+int strncmp(const char *a, const char *b, size_t n)
+{
+	int i = 0;
+	while (a[i] != 0 && b[i] != 0 && i < n)
+	{
+		if(a[i] != b[i])
+			return 1;
+		i++;
+	}
+	return 0;
+}
+
+char *strcat(char *dest, const char *src)
+{
+	void *tmp = *dest;
+
+	// Skip to end of dest.
+	while (*tmp++)
+		;
+
+	do {
+		*tmp = *src;
+
+		*tmp++;
+	} while (*src++);
+
+	return dest;
+}
+
 int memcmp(const void *s1, const void *s2, size_t n)
 {
   size_t i;

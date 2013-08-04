@@ -12,6 +12,7 @@
 #endif
 
 typedef size_t uintptr_t;
+typedef size_t ptrdiff_t; // No clue if this is right.
 
 #include <stdlib.h> // Is this right? I don't even care.
 

@@ -5,7 +5,7 @@ MRuby::CrossBuild.new("host") do |conf|
 
   BOOTRB_PATH = File.dirname(__FILE__)
 
-  CXXFLAGS = %W[-std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -m32 -O0 -mno-sse]
+  CFLAGS = %W[-std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -m32 -O0 -mno-sse]
   #ASFLAGS  = %w[-felf32 -g]
   #LDFLAGS  = %w[-nostdlib -melf_i386 -g]
 
@@ -25,8 +25,10 @@ MRuby::CrossBuild.new("host") do |conf|
   conf.cc do |cc|
     #cc.command = "#{BIN_PATH}/arm-none-eabi-gcc"
     cc.include_paths << ["#{BOOTRB_PATH}/include"]
-    cc.flags = CXXFLAGS
+    cc.flags = CFLAGS
     cc.compile_options = "%{flags} -o %{outfile} -c %{infile}"
+
+    cc.defines << %w(DISABLE_STDIO)
 
     #configuration for low memory environment
     #cc.defines << %w(MRB_HEAP_PAGE_SIZE=64)

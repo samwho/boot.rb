@@ -18,7 +18,7 @@ tools/bootinfo: tools/bootinfo.c
 qemu: os.iso
 	@$(QEMU) -cdrom os.iso -monitor stdio
 
-os.iso: kernel.bin tools/bootinfo
+os.iso: kernel.bin tools/bootinfo mruby
 	@mkdir -p isofs/System
 	cp $< isofs/System
 	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -input-charset utf-8 -o $@ isofs

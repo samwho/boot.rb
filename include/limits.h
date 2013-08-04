@@ -7,6 +7,9 @@
 #define INT32_MAX (uint32_t)-1
 #define INT32_MIN (uint32_t)0
 
+#define UINT16_MAX (uint16_t)-1
+#define UINT16_MIN (uint16_t)0
+
 #define CHAR_BIT 8 // *shrug*
 
 #endif /* end of include guard: LIMITS_H */
