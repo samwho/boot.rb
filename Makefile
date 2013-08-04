@@ -18,13 +18,13 @@ tools/bootinfo: tools/bootinfo.c
 qemu: os.iso
 	@$(QEMU) -cdrom os.iso -monitor stdio
 
-os.iso: tools/bootinfo kernel.bin
+os.iso: kernel.bin tools/bootinfo
 	@mkdir -p isofs/System
 	cp $< isofs/System
 	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -input-charset utf-8 -o $@ isofs
 	./tools/bootinfo isofs/boot/grub/stage2_eltorito os.iso
 
-kernel.bin: ${OBJFILES} 
+kernel.bin: ${OBJFILES}
 	${LD} ${LDFLAGS} -T src/linker.ld -o $@ $^
 %.o: %.c @${CC} ${CFLAGS} -MMD -MP -MT "$*.d $*.o"	-c $< -o $@
 %.o: %.asm @${ASM} ${ASFLAGS} -o $@ $<
