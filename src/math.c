@@ -1,6 +1,6 @@
 #include <math.h>
 
-uint32_t abs(uint32_t n) {
+int32_t abs(int32_t n) {
 	if (n < 0)
 		return n*-1;
 	else
@@ -27,7 +27,7 @@ double pow(double base, double exponent)
 		return 1;
 
 	if ( exponent < 0 ) 
-		return 1.0/powd(base, (-1)*exponent);
+		return 1.0/pow(base, (-1)*exponent);
 
 	for ( i = 0; i < exponent; i++ )
 		result *= base;
@@ -54,7 +54,7 @@ double nth_root(double a, double n)
 	 */
 
 	for (i = 0; i < 100; i++) {
-		guess = ( (n-1)*guess + a/powd(guess,(n-1)) )/n;
+		guess = ( (n-1)*guess + a/pow(guess,(n-1)) )/n;
 		if ( newn == guess ) {
 			return guess;
 		}

@@ -7,8 +7,8 @@ int strcmp(const char *a, const char *b);
 int strlen(const char *str);
 char *substr(char *str, int len);
 
-const char* begin(char* str);
-const char* end(char* str);
+const char* begin(const char* str);
+const char* end(const char* str);
 
 int memcmp(const void *s1, const void *s2, size_t n);
 

@@ -3,6 +3,7 @@
 #include <modifiers.h>
 #include <stdint.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
 #define TF_ALTERNATE 1
 #define TF_ZEROPAD 2

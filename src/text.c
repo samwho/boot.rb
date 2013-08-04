@@ -363,35 +363,3 @@ reset:
 			str[size] = '\0';
 	return len;
 }
-
-int strcmp(char *a, char *b)
-{
-	int i = 0;
-	while (a[i] != 0 && b[i] != 0)
-	{
-		if(a[i] != b[i])
-			return 1;
-		i++;
-	}
-	return 0;
-}
-
-int strlen(char *str)
-{
-	int i = 0;
-	while(str[i] != 0) i++;
-	return i;
-}
-
-char *substr(char *str, int len)
-{
-	char *res = "";
-	int i = 0;
-	while(str[i] != 0 && i < len)
-	{
-		res[i] = str[i];
-		i++;
-	}
-	res[i] = 0;
-	return res;
-}
