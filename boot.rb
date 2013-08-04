@@ -1,7 +1,13 @@
 # Cross Compiling configuration for boot.rb
 #
+
+MRuby::Build.new do |conf|
+  toolchain :clang
+  conf.gembox 'default'
+end
+
 MRuby::CrossBuild.new("host") do |conf|
-  toolchain :gcc
+  toolchain :clang
 
   BOOTRB_PATH = File.dirname(__FILE__)
 
@@ -23,7 +29,7 @@ MRuby::CrossBuild.new("host") do |conf|
   #TARGET_PATH = "#{SAM_PATH}/variants/arduino_due_x"
 
   conf.cc do |cc|
-    #cc.command = "#{BIN_PATH}/arm-none-eabi-gcc"
+    #cc.command = "#{BIN_PATH}/arm-none-eabi-clang"
     cc.include_paths << ["#{BOOTRB_PATH}/include"]
     cc.flags = CFLAGS
     cc.compile_options = "%{flags} -o %{outfile} -c %{infile}"
@@ -66,8 +72,4 @@ MRuby::CrossBuild.new("host") do |conf|
 
   #light-weight regular expression
   conf.gem :github => "masamitsu-murase/mruby-hs-regexp", :branch => "master" 
-
-  #Arduino API
-  #conf.gem :github =>"kyab/mruby-arduino", :branch => "master"
-
 end
