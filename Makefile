@@ -8,7 +8,7 @@ OBJFILES := $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCFILES)))
 CFLAGS := -std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -m32 -O0 -mno-sse -Wextra
 LDFLAGS := -nostdlib -g -melf_i386
 ASFLAGS := -felf32 -g
-.PHONY: all clean qemu
+.PHONY: all clean qemu mruby
 
 all: os.iso
 
@@ -24,6 +24,9 @@ kernel.bin: ${OBJFILES}
 	${LD} ${LDFLAGS} -T src/linker.ld -o $@ $^
 %.o: %.c @${CC} ${CFLAGS} -MMD -MP -MT "$*.d $*.o"	-c $< -o $@
 %.o: %.asm @${ASM} ${ASFLAGS} -o $@ $<
+
+mruby:
+	(git submodule update --init && cd mruby && MRUBY_CONFIG=../boot.rb ./minirake clean all)
 
 clean:
 	$(RM) $(wildcard $(OBJFILES) kernel.bin os.iso)

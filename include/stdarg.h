@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STDARG_H
+#define STDARG_H
 
 #define va_start(v,l) __builtin_va_start(v,l)
 #define va_arg(v,l) __builtin_va_arg(v,l)
@@ -6,3 +7,7 @@
 #define va_copy(d,s) __builtin_va_copy(d,s)
 typedef __builtin_va_list va_list;
 
+
+typedef __builtin_va_list __gnuc_va_list;
+
+#endif /* end of include guard: STDARG_H */
