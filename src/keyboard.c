@@ -64,3 +64,13 @@ char *readUntilReturn()
 	buff[i-1] = '\0';
 	return buff;
 }
+
+
+
+int getchar()
+{
+  char *tmp = malloc(1);
+  fgets(1, tmp);
+  return (int)(tmp[0]);
+}
+

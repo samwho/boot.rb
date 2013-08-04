@@ -3,6 +3,7 @@
 
 #include <text.h>
 #include <screen.h>
+#include <keyboard.h>
 
 // BEGIN CHEATING
 
