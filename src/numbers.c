@@ -6,7 +6,7 @@ int atoi(const char *str)
 	    pos = 0,
 	    tmp = end(str);
 
-	for (pos = 0; *tmp-- != *str; pos++)
+	for (pos = 0; tmp-- != str; pos++)
 		ret += (pos * 10) + (*tmp - 48);
 
 	return ret;
