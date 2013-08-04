@@ -91,3 +91,13 @@ int memcmp(const void *s1, const void *s2, size_t n)
 
   return 0;
 }
+
+void *memchr(const void *s, int c, size_t n)
+{
+	size_t i;
+
+	for (i = 0; *s++ != c && i < n; i++)
+		;
+
+	return s;
+}

@@ -13,6 +13,8 @@
 #define fputs(s, stream) puts(s)
 #define fprintf(stream, format, ...) printf(format, ##__VA_ARGS__)
 
+typedef uint32_t FILE;
+
 // END CHEATING
 
 #endif /* end of include guard: STDIO_H */
