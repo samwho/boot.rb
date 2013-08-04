@@ -1,7 +1,7 @@
 CC	:= clang
 AS := nasm
 LD := ld
-QEMU := qemu
+QEMU := qemu-system-i386
 SOURCE_SUFFIXES := '(' -name '*.c' -o -name '*.s' ')'
 SRCFILES  := $(shell find 'src' ${SOURCE_SUFFIXES})
 OBJFILES := $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCFILES)))
@@ -12,13 +12,17 @@ ASFLAGS := -felf32 -g
 
 all: os.iso
 
-qemu:
+tools/bootinfo: tools/bootinfo.c
+	cc -o $@ $<
+
+qemu: os.iso
 	@$(QEMU) -cdrom os.iso -monitor stdio
 
-os.iso: kernel.bin
+os.iso: tools/bootinfo kernel.bin
 	@mkdir -p isofs/System
 	cp $< isofs/System
-	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -input-charset utf-8 -boot-info-table -o $@ isofs
+	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -input-charset utf-8 -o $@ isofs
+	./tools/bootinfo isofs/boot/grub/stage2_eltorito os.iso
 
 kernel.bin: ${OBJFILES} 
 	${LD} ${LDFLAGS} -T src/linker.ld -o $@ $^
