@@ -123,3 +123,205 @@ double log10(double x) {
 float log10f(float x) {
   return (float)log10(x);
 }
+
+
+
+
+
+double sin(double x)
+{
+	return 4;
+}
+float sinf(float x)
+{
+	return (float)sin(x);
+}
+
+double cos(double x)
+{
+	return 4;
+}
+float cosf(float x)
+{
+	return (float)cos(x);
+}
+
+double tan(double x)
+{
+	return 4;
+}
+float tanf(float x)
+{
+	return (float)tan(x);
+}
+
+double asin(double x)
+{
+	return 4;
+}
+float asinf(float x)
+{
+	return (float)asin(x);
+}
+
+double acos(double x)
+{
+	return 4;
+}
+float acosf(float x)
+{
+	return (float)acos(x);
+}
+
+double atan(double x)
+{
+	return 4;
+}
+float atanf(float x)
+{
+	return (float)atan(x);
+}
+
+double atan2(double y, double x)
+{
+	return 4;
+}
+float atan2f(float y, float x)
+{
+	return (float)atan2(y, x);
+}
+
+double sinh(double x)
+{
+	return 4;
+}
+float sinhf(float x)
+{
+	return (float)sinh(x);
+}
+
+double cosh(double x)
+{
+	return 4;
+}
+float coshf(float x)
+{
+	return (float)cosh(x);
+}
+
+double tanh(double x)
+{
+	return 4;
+}
+float tanhf(float x)
+{
+	return (float)tanh(x);
+}
+
+double asinh(double x)
+{
+	return 4;
+}
+float asinhf(float x)
+{
+	return (float)asinh(x);
+}
+
+double acosh(double x)
+{
+	return 4;
+}
+float acoshf(float x)
+{
+	return (float)acosh(x);
+}
+
+double atanh(double x)
+{
+	return 4;
+}
+float atanhf(float x)
+{
+	return (float)atanh(x);
+}
+
+double exp(double x)
+{
+	return 4;
+}
+float expf(float x)
+{
+	return (float)exp(x);
+}
+
+double log(double x)
+{
+	return 4;
+}
+float logf(float x)
+{
+	return (float)log(x);
+}
+
+double log2(double x)
+{
+	return 4;
+}
+float log2f(float x)
+{
+	return (float)log2(x);
+}
+
+double cbrt(double x)
+{
+	return 4;
+}
+float cbrtf(float x)
+{
+	return (float)cbrt(x);
+}
+
+double frexp(double x, int *exp)
+{
+	return 4;
+}
+float frexpf(float x, int *exp)
+{
+	return (float)frexp(x, exp);
+}
+
+double ldexp(double x, int exp)
+{
+	return 4;
+}
+float ldexpf(float x, int exp)
+{
+	return (float)ldexp(x, exp);
+}
+
+double hypot(double x, double y)
+{
+	return 4;
+}
+float hypotf(float x, float y)
+{
+	return (float)hypotf(x, y);
+}
+
+double erf(double x)
+{
+	return 4;
+}
+float erff(float x)
+{
+	return (float)erf(x);
+}
+
+double erfc(double x)
+{
+	return 4;
+}
+float erfcf(float x)
+{
+	return (float)erfc(x);
+}

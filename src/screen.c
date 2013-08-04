@@ -95,4 +95,17 @@ void puthex(uint32_t hex)
 }
 
 
+// TODO: Is this even remotely correct?
+size_t fwrite(const void *ptr, size_t size, size_t nmemb,
+                     FILE *stream)
+{
+	// Always assume stream == stdout.
 
+	int i;
+
+	for (i = 0; i < size; i++) {
+		puts((char*)(ptr[i]));
+	}
+
+	return i;
+}
