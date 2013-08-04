@@ -4,6 +4,11 @@ SECTIONS
 {
     . = 0x00100000;
 
+    .mboot ALIGN(0x1000) :
+    {
+        *(.mboot)
+    }
+
     .text ALIGN (0x1000) :
     {
 		*(.text)
