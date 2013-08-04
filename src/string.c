@@ -80,6 +80,29 @@ char *strcat(char *dest, const char *src)
 	return dest;
 }
 
+char *strcpy(char *dest, const char *src)
+{
+	char *tmp = dest;
+
+	while ((*tmp++, *src++))
+		;
+
+	return dest;
+}
+
+char *strncpy(char *dest, const char *src, size_t n)
+{
+	int i = n;
+
+	while (i--)
+		dest[i] = src[i];
+
+	for (i = strlen(dest) - 1; i < n; i++)
+		dest[i] = '\0';
+
+	return dest;
+}
+
 int memcmp(const void *s1, const void *s2, size_t n)
 {
   size_t i;

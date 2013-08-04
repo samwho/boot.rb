@@ -44,7 +44,7 @@ void memset(void *ptr, char val, int size)
 	}
 }
 
-void memcpy(void *dest, void *src, int size)
+void memcpy(void *dest, const void *src, int size)
 {
 	char* d = (char*)dest;
 	char *s = (char*)src;

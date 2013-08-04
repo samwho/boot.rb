@@ -5,6 +5,7 @@
 #include <limits.h>
 //#include <math.h>
 //#include <sys/wait.h>
+#include <stdio.h>
 
 /* These are the same for all machines */
 #define EXIT_FAILURE 1

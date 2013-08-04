@@ -8,12 +8,18 @@
 
 #define stderr (-1)
 #define stdin  (-1)
+#define stdout (-1)
+
+// Hack because all of boot.rb expects putc(c), but ruby expects putc(c, stream).
+#define putc(c, ...) putc(c)
 
 #define fputc(c, stream) putc(c)
 #define fputs(s, stream) puts(s)
 #define fprintf(stream, format, ...) printf(format, ##__VA_ARGS__)
 
 typedef uint32_t FILE;
+
+#define EOF (-1)
 
 // END CHEATING
 
