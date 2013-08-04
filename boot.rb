@@ -1,12 +1,12 @@
 # Cross Compiling configuration for boot.rb
 #
 
-MRuby::Build.new do |conf|
+MRuby::Build.new("host") do |conf|
   toolchain :clang
   conf.gembox 'default'
 end
 
-MRuby::CrossBuild.new("host") do |conf|
+MRuby::CrossBuild.new("boot.rb") do |conf|
   toolchain :clang
 
   BOOTRB_PATH = File.dirname(__FILE__)
@@ -71,5 +71,5 @@ MRuby::CrossBuild.new("host") do |conf|
   conf.gem :core => "mruby-enum-ext"
 
   #light-weight regular expression
-  conf.gem :github => "masamitsu-murase/mruby-hs-regexp", :branch => "master" 
+  #conf.gem :github => "masamitsu-murase/mruby-hs-regexp", :branch => "master" 
 end

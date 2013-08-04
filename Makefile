@@ -30,7 +30,7 @@ kernel.bin: ${OBJFILES}
 %.o: %.asm @${ASM} ${ASFLAGS} -o $@ $<
 
 mruby:
-	(git submodule update --init && cd mruby && MRUBY_CONFIG=../boot.rb ./minirake clean all)
+	(git submodule update --init && cd mruby && TARGET=boot.rb MRUBY_CONFIG=../boot.rb ./minirake clean all)
 
 clean:
 	$(RM) $(wildcard $(OBJFILES) kernel.bin os.iso)
