@@ -17,3 +17,15 @@ const char* end(const char* str) {
 		str++;
   return str;
 }
+
+int memcmp(const void *s1, const void *s2, size_t n)
+{
+  while (*s1++ && *s2++) {
+    if (*s1 < *s2)
+      return -1;
+    else if (*s1 > *s2)
+      return 1;
+  }
+
+  return 0;
+}

@@ -2,7 +2,7 @@
 #define STDLIB_H
 
 #include <stddef.h>
-//#include <limits.h>
+#include <limits.h>
 //#include <math.h>
 //#include <sys/wait.h>
 
@@ -40,12 +40,12 @@ void free(void *);
 
 /* String to number conversion */
 
-//double strtod(const char *, char **);
-//float strtof(const char *, char **);
+double strtod(const char *, char **);
+float strtof(const char *, char **);
 //long strtol(const char *, char **, int);
 //long double strtold(const char *, char **);
 //long long strtoll(const char *, char **, int);
-//unsigned long strtoul(const char *, char **, int);
+unsigned long strtoul(const char *, char **, int);
 //unsigned long long strtoull(const char *, char **, int);
 
 #endif

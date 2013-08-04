@@ -5,7 +5,7 @@ MRuby::CrossBuild.new("host") do |conf|
 
   BOOTRB_PATH = File.dirname(__FILE__)
 
-  CXXFLAGS = %W[-std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -m32 -O0 -mno-sse -Wextra]
+  CXXFLAGS = %W[-std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -m32 -O0 -mno-sse]
   #ASFLAGS  = %w[-felf32 -g]
   #LDFLAGS  = %w[-nostdlib -melf_i386 -g]
 
