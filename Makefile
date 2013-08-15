@@ -9,9 +9,7 @@ CFLAGS := -std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-bui
 LDFLAGS := -nostdlib -g -melf_i386
 ASFLAGS := -felf32 -g
 
-CRAP := $(git submodule update --init && ./generate-kernel-irb-file.sh)
-
-.PHONY: all clean qemu mruby mruby-clean clean-all kernel.bin-real
+.PHONY: all clean qemu mruby mruby-clean clean-all kernel.bin-real generate-kernel-irb-file
 
 all: os.iso
 
@@ -28,12 +26,15 @@ os.iso: kernel.bin tools/bootinfo
 	./tools/bootinfo isofs/boot/grub/stage2_eltorito os.iso
 
 # Ew.
-kernel.bin: ${OBJFILES} mruby kernel.bin-real
+kernel.bin: generate-kernel-irb-file ${OBJFILES} mruby kernel.bin-real
 kernel.bin-real: ${OBJFILES}
 	${LD} ${LDFLAGS} -T src/linker.ld -o kernel.bin $^ $(shell find 'mruby/build/boot.rb' -name '*.o')
 
 %.o: %.c @${CC} ${CFLAGS} -MMD -MP -MT "$*.d $*.o"	-c $< -o $@
 %.o: %.asm @${ASM} ${ASFLAGS} -o $@ $<
+
+generate-kernel-irb-file:
+	git submodule update --init && ./generate-kernel-irb-file.sh
 
 mruby: mruby/build/boot.rb
 mruby/build/boot.rb:
