@@ -9,6 +9,8 @@
 #include <text.h>
 #include <memory.h>
 
+extern int mirb_main(int argc, char **argv);
+
 void kmain(void)
 {
 	extern unsigned int magic;
@@ -52,7 +54,9 @@ void kmain(void)
 	while(1)
 	{
 		puts("# ");
+
 		cmd = readUntilReturn();
+
 		if(strcmp(cmd, "test") == 0)
 			printf("ERROR: Test failed.\n");
 		else if (strcmp(cmd, "help") == 0)
@@ -70,6 +74,10 @@ void kmain(void)
 		{
 			printf("mmap no. %c\n", cmd[5]);
 			print_mmap_entry(mbd, cmd[5] - 48);
+		}
+		else if (strcmp(cmd, "irb") == 0)
+		{
+			mirb_main(0, NULL);
 		}
 		else 
 			printf("ERROR: Command not recognised. Please blow into the cartridge and try again.\n");

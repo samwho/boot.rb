@@ -5,3 +5,4 @@ os.iso
 isofs/System/*
 *.d
 tools/bootinfo
+src/mirb.c
