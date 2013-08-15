@@ -214,7 +214,10 @@ void free(void *ptr)
 void *realloc(void *ptr, size_t size)
 {
 	void *new = malloc(size);
+
+	// TODO: Determine how much to actually copy. `size` isn't it. Make cause pagefaults.
 	memcpy(new, ptr, size);
+
 	free(ptr);
 
 	return new;
