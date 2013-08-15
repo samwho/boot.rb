@@ -210,3 +210,12 @@ void free(void *ptr)
 	else
 		blk->free = 1;
 }
+
+void *realloc(void *ptr, size_t size)
+{
+	void *new = malloc(size);
+	memcpy(new, ptr, size);
+	free(ptr);
+
+	return new;
+}
