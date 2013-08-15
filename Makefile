@@ -5,11 +5,13 @@ QEMU := qemu-system-i386
 SOURCE_SUFFIXES := '(' -name '*.c' -o -name '*.s' ')'
 SRCFILES  := $(shell find 'src' ${SOURCE_SUFFIXES})
 OBJFILES := $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCFILES)))
-CFLAGS := -std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -m32 -O0 -mno-sse -Wextra
+CFLAGS := -std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -Imruby/include -m32 -O0 -mno-sse -Wextra
 LDFLAGS := -nostdlib -g -melf_i386
 ASFLAGS := -felf32 -g
 
-.PHONY: all clean qemu mruby mruby-clean clean-all
+CRAP := $(git submodule update --init && ./generate-kernel-irb-file.sh)
+
+.PHONY: all clean qemu mruby mruby-clean clean-all kernel.bin-real
 
 all: os.iso
 
@@ -25,14 +27,15 @@ os.iso: kernel.bin tools/bootinfo
 	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -input-charset utf-8 -o $@ isofs
 	./tools/bootinfo isofs/boot/grub/stage2_eltorito os.iso
 
-kernel.bin: ${OBJFILES}
-	make mruby
-	${LD} ${LDFLAGS} -T src/linker.ld -o $@ $^ $(shell find 'mruby/build/boot.rb' -name '*.o')
+# Ew.
+kernel.bin: ${OBJFILES} mruby kernel.bin-real
+kernel.bin-real: ${OBJFILES}
+	${LD} ${LDFLAGS} -T src/linker.ld -o kernel.bin $^ $(shell find 'mruby/build/boot.rb' -name '*.o')
+
 %.o: %.c @${CC} ${CFLAGS} -MMD -MP -MT "$*.d $*.o"	-c $< -o $@
 %.o: %.asm @${ASM} ${ASFLAGS} -o $@ $<
 
 mruby: mruby/build/boot.rb
-
 mruby/build/boot.rb:
 	(git submodule update --init && cd mruby && TARGET=boot.rb MRUBY_CONFIG=../boot.rb ./minirake clean all)
 
