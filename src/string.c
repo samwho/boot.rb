@@ -65,7 +65,7 @@ int strncmp(const char *a, const char *b, size_t n)
 
 char *strcat(char *dest, const char *src)
 {
-	void *tmp = *dest;
+	char *tmp = *dest;
 
 	// Skip to end of dest.
 	while (*tmp++)
@@ -117,9 +117,7 @@ int memcmp(const void *s1, const void *s2, size_t n)
 
 void *memchr(const void *s, int c, size_t n)
 {
-	size_t i;
-
-	for (i = 0; *s++ != c && i < n; i++)
+	while ( ( *(unsigned char*)(s++) != (unsigned char)(c) ) && (n-- > 0))
 		;
 
 	return s;

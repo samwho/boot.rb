@@ -1,5 +1,5 @@
-#ifndef STDLIB_H
-#define STDLIB_H
+#ifndef PANIC_H
+#define PANIC_H
 
 #define __halt_with_message(format, ...) {   \
 	printf(format, ##__VA_ARGS__); \

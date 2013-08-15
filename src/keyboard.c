@@ -70,7 +70,7 @@ char *readUntilReturn()
 int getchar()
 {
   char *tmp = malloc(1);
-  fgets(1, tmp);
+  fgets(1, tmp, stdin);
   return (int)(tmp[0]);
 }
 

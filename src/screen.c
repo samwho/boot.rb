@@ -104,7 +104,7 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb,
 	int i;
 
 	for (i = 0; i < size; i++) {
-		puts((char*)(ptr[i]));
+		puts((char*)(ptr + i));
 	}
 
 	return i;
