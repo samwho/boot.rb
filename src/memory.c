@@ -6,7 +6,7 @@ void print_mmap_info(multiboot_info_t *mbd)
 {
 	if(mbd->flags & MULTIBOOT_INFO_MEM_MAP)
 	{
-		multiboot_memory_map_t *mmap = mbd->mmap_addr;
+		multiboot_memory_map_t *mmap = (multiboot_memory_map_t*)(mbd->mmap_addr);
 		int i = 1;
 		while(mmap < mbd->mmap_addr + mbd->mmap_length)
 		{
@@ -28,7 +28,7 @@ void print_mmap_entry(multiboot_info_t *mbd, uint32_t n)
 	printf("ENTRY #%d\n", n);
 	if(mbd->flags & MULTIBOOT_INFO_MEM_MAP)	
 	{
-		multiboot_memory_map_t *mmap = mbd->mmap_addr + (mmap->size + sizeof(mmap->size))*n;
+		multiboot_memory_map_t *mmap = (multiboot_memory_map_t*)(mbd->mmap_addr + (mbd->mmap_length + sizeof(mbd->mmap_length))*n);
 		printf("Memory map base address: 0x%x%x\n", (uint32_t)mmap->addr >> 32, (uint32_t)mmap->addr & 0xfffffff);
 		printf("Memory map length: 0x%x%x\n", (uint32_t)mmap->len >> 32, (uint32_t)mmap->len & 0xffffffff);
 		printf("Memory map size: 0x%x\n", mmap->size);
@@ -129,6 +129,7 @@ struct block *find_order(unsigned int order, struct block *start)
 		start->children[1] = create_child(start,1);
 		return find_order(order, start);
 	}
+
 	return 0;
 }
 
@@ -155,6 +156,7 @@ void *find_block(unsigned int size)
 	{
 		suitable_block->free = 0;
 		block_parents(suitable_block);
+
 		return suitable_block->addr;
 	}
 	else
@@ -189,7 +191,7 @@ void *malloc(unsigned int size)
 	if(size > ((1 << ORDER_LIMIT) * BLOCK_MIN * 1024)) //Erp, it's too big!
 		return 0;
 
-	return find_block(size);
+	return (void*)((void**)find_block(size));
 }
 
 void free(void *ptr)

@@ -5,7 +5,7 @@
 
 int strcmp(const char *a, const char *b);
 int strlen(const char *str);
-char *substr(char *str, int len);
+char *substr(char *str, size_t len);
 
 const char* begin(const char* str);
 const char* end(const char* str);

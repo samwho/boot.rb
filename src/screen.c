@@ -101,7 +101,7 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb,
 {
 	// Always assume stream == stdout.
 
-	int i;
+	size_t i;
 
 	for (i = 0; i < size; i++) {
 		puts((char*)(ptr + i));

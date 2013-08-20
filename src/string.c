@@ -1,7 +1,7 @@
 #include "string.h"
 
 int strlen(const char* str) {
-	int i = 0;
+	size_t i = 0;
 	while(str[i] != '\0')
 		i++;
 	return i;
@@ -20,20 +20,27 @@ const char* end(const char* str) {
 
 int strcmp(const char *a, const char *b)
 {
-	int i = 0;
+	size_t i = 0;
+
 	while (a[i] != 0 && b[i] != 0)
 	{
 		if(a[i] != b[i])
-			return 1;
+			break;
 		i++;
 	}
-	return 0;
+
+	if (a[i] == 0 && b[i] == 0)
+		return 0;
+	else if (a[i] == 0)
+		return -1;
+	else if (b[i] == 0)
+		return 1;
 }
 
-char *substr(char *str, int len)
+char *substr(char *str, size_t len)
 {
 	char *res = "";
-	int i = 0;
+	size_t i = 0;
 	while(str[i] != 0 && i < len)
 	{
 		res[i] = str[i];
@@ -48,24 +55,31 @@ char *strchr(const char *s, int c)
 	while (*s++ != c)
 		;
 
-	return s;
+	return (char*)s;
 }
 
 int strncmp(const char *a, const char *b, size_t n)
 {
-	int i = 0;
+	size_t i = 0;
+
 	while (a[i] != 0 && b[i] != 0 && i < n)
 	{
 		if(a[i] != b[i])
-			return 1;
+			break;
 		i++;
 	}
-	return 0;
+
+	if (a[i] == 0 && b[i] == 0)
+		return 0;
+	else if (a[i] == 0)
+		return -1;
+	else if (b[i] == 0)
+		return 1;
 }
 
 char *strcat(char *dest, const char *src)
 {
-	char *tmp = *dest;
+	char *tmp = dest;
 
 	// Skip to end of dest.
 	while (*tmp++)
@@ -74,7 +88,7 @@ char *strcat(char *dest, const char *src)
 	do {
 		*tmp = *src;
 
-		*tmp++;
+		tmp++;
 	} while (*src++);
 
 	return dest;
@@ -82,9 +96,9 @@ char *strcat(char *dest, const char *src)
 
 char *strcpy(char *dest, const char *src)
 {
-	char *tmp = dest;
+  char *tmp = dest;
 
-	while ((*tmp++, *src++))
+	while ((*tmp++ = *src++))
 		;
 
 	return dest;
@@ -92,7 +106,7 @@ char *strcpy(char *dest, const char *src)
 
 char *strncpy(char *dest, const char *src, size_t n)
 {
-	int i = n;
+	size_t i = n;
 
 	while (i--)
 		dest[i] = src[i];
@@ -120,5 +134,5 @@ void *memchr(const void *s, int c, size_t n)
 	while ( ( *(unsigned char*)(s++) != (unsigned char)(c) ) && (n-- > 0))
 		;
 
-	return s;
+	return (void*)s;
 }
