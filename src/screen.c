@@ -87,7 +87,7 @@ void puthex(uint32_t hex)
 {
 	puts("0x");
 	uint8_t *bytes = (uint8_t *)&hex;
-	for(int i = 3; i >=  0; i--)
+	for(int i = 3; i >= 0; i--)
 	{
 		putc(nybble_chars[(bytes[i] >> 4) & 0xF]);
 		putc(nybble_chars[bytes[i] & 0x0F]);

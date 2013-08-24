@@ -37,7 +37,7 @@ double pow(double base, double exponent)
 
 float powf(float base, float exponent)
 {
-  return (float)pow(base, exponent);
+	return (float)pow(base, exponent);
 }
 
 double nth_root(double a, double n)
@@ -105,7 +105,7 @@ double ceilf(double n)
 }
 
 double fmod(double x, double y) {
-  return 4; 
+	return 4; 
 }
 
 inline float fmodf(float x, float y) {
@@ -113,15 +113,15 @@ inline float fmodf(float x, float y) {
 }
 
 long double fmodl(long double x, long double y) {
-  return 4;
+	return 4;
 }
 
 double log10(double x) {
-  return 4;
+	return 4;
 }
 
 float log10f(float x) {
-  return (float)log10(x);
+	return (float)log10(x);
 }
 
 

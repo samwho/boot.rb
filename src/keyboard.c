@@ -69,8 +69,8 @@ char *readUntilReturn()
 
 int getchar()
 {
-  char *tmp = malloc(1);
-  fgets(tmp, 1, stdin);
-  return (int)(tmp[0]);
+	char *tmp = malloc(1);
+	fgets(tmp, 1, stdin);
+	return (int)(tmp[0]);
 }
 

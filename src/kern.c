@@ -58,12 +58,12 @@ void kmain(void)
 	{
 		puts("# ");
 
-    cmd = "";
+		cmd = "";
 		cmd = readUntilReturn();
 
-    if (strlen(cmd ) == 0)
-      continue;
-    else if (strcmp(cmd, "help") == 0)
+		if (strlen(cmd ) == 0)
+			continue;
+		else if (strcmp(cmd, "help") == 0)
 			printf(
 "COMMANDS:\n\
 help     - This command.\n\
@@ -89,7 +89,7 @@ irb      - Open an mruby terminal.\n\
 		{
 			printf("mmap no. %c\n", cmd[5]);
 			print_mmap_entry(mbd, cmd[5] - 48);
-      puts("\n");
+			puts("\n");
 		}
 		else if (strcmp(cmd, "irb") == 0)
 		{

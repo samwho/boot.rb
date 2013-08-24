@@ -15,7 +15,7 @@ const char* end(const char* str) {
 	// Find the end of the string (where the nul is found)
 	while(*str != '\0')
 		str++;
-  return str;
+	return str;
 }
 
 int strcmp(const char *a, const char *b)
@@ -96,7 +96,7 @@ char *strcat(char *dest, const char *src)
 
 char *strcpy(char *dest, const char *src)
 {
-  char *tmp = dest;
+	char *tmp = dest;
 
 	while ((*tmp++ = *src++))
 		;
@@ -119,14 +119,14 @@ char *strncpy(char *dest, const char *src, size_t n)
 
 int memcmp(const void *s1, const void *s2, size_t n)
 {
-  size_t i;
+	size_t i;
 
-  for (i = 0; i < n; i++, s1++, s2++) {
-    if ( *((uint8_t*)(s1)) != *((uint8_t*)(s2)) )
-      return ( *((uint8_t*)(s1)) - *((uint8_t*)(s2)) );
-  }
+	for (i = 0; i < n; i++, s1++, s2++) {
+		if ( *((uint8_t*)(s1)) != *((uint8_t*)(s2)) )
+			return ( *((uint8_t*)(s1)) - *((uint8_t*)(s2)) );
+	}
 
-  return 0;
+	return 0;
 }
 
 void *memchr(const void *s, int c, size_t n)
