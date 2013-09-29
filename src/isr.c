@@ -18,7 +18,12 @@ void register_interrupt_handler(uint8_t n, isr_t handler)
 	interrupt_handlers[n] = handler;
 }
 
-void remapPic()
+/*
+ * An explanation of WTF the below code means can be found here:
+ *
+ *   https://en.wikibooks.org/wiki/X86_Assembly/Programmable_Interrupt_Controller#Remapping
+ */
+void remap_pic()
 {
 	outb(0x20, 0x11);
 	outb(0xA0, 0x11);

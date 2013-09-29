@@ -53,7 +53,7 @@ void idtInit()
 	idtSetGate(30, (uint32_t)isr30, 0x08, 0x8E);
 	idtSetGate(31, (uint32_t)isr31, 0x08, 0x8E);
 
-	remapPic();
+	remap_pic();
 
 	idtSetGate(32, (uint32_t)irq0, 0x08, 0x8E);
 	idtSetGate(33, (uint32_t)irq1, 0x08, 0x8E);

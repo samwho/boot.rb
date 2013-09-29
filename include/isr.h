@@ -81,5 +81,5 @@ extern void irq13();
 extern void irq14();
 extern void irq15();
 
-void remapPic();
+void remap_pic();
 void timercallback(registers_t regs);
