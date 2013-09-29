@@ -25,29 +25,34 @@ void kmain(void)
 
 	cls();
 
-	puts("Welcome to Kernel!\n");
+	puts("[kern] Welcome to Kernel!\n");
 
-	printf("Multiboot command line: %s \nMultiboot flags: 0x%x\n", mbd->cmdline, mbd->flags);
+	printf("[kern] Multiboot command line: %s\n", mbd->cmdline);
+    printf("[kern] Multiboot flags: 0x%x\n", mbd->flags);
 
-	puts("Initalising GDT...");
+	puts("[kern] gdt_init() start...\n");
 	gdt_init();
-	puts("done.\n");
+	puts("[kern] gdt_init() done.\n");
 
-	puts("Initalising IDT...");
+	puts("[kern] idt_init() start ...\n");
 	idt_init();
-	puts("done.\n");
+	puts("[kern] idt_init() done.\n");
 
-	puts("Initialising PIT...");
+	puts("[kern] isr_init() start...\n");
+	isr_init();
+	puts("[kern] isr_init() done.\n");
+
+	puts("[kern] timer_init() start...\n");
 	timer_init(1);
-	puts("done.\n");
+	puts("[kern] timer_init() done.\n");
 
-	puts("Initialising keyboard...");
+	puts("[kern] keyboard_init() start...\n");
 	keyboard_init();
-	puts("done.\n");
+	puts("[kern] keyboard_init() done.\n");
 
-	puts("Initialising memory manager...");
+	puts("[kern] mm_init() start...\n");
 	mm_init(0xDEADBEEF);
-	puts("done.\n");
+	puts("[kern] mm_init() done.\n");
 
 	__asm__("sti");
 
@@ -66,13 +71,14 @@ void kmain(void)
 		else if (strcmp(cmd, "help") == 0)
 			printf(
 "COMMANDS:\n\
-help     - This command.\n\
-test     - A useful test.\n\
-reset    - Resets the CPU.\n\
-malloc   - Allocate a 4k block of RAM.\n\
-memreset - Reset the heap.\n\
-mmap     - Print a memory map.\n\
-irb      - Open an mruby terminal.\n\
+help      - This command.\n\
+test      - A useful test.\n\
+reset     - Resets the CPU.\n\
+malloc    - Allocate a 4k block of RAM.\n\
+memreset  - Reset the heap.\n\
+mmap      - Print a memory map.\n\
+irb       - Open an mruby terminal.\n\
+printisrs - Prints the full ISR table.\n\
 ");
 		else if(strcmp(cmd, "test") == 0)
 			run_tests();
@@ -95,6 +101,10 @@ irb      - Open an mruby terminal.\n\
 		{
 			mirb_main(0, NULL);
 		}
+        else if (strcmp(cmd, "printisrs") == 0)
+        {
+            print_isrs();
+        }
 		else
 			printf("ERROR: Command not recognised. Please blow into the cartridge and try again.\n");
 

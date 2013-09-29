@@ -27,8 +27,21 @@ typedef struct registers
    uint32_t eip, cs, eflags, useresp, ss; // Pushed by the processor automatically.
 } registers_t;
 
+typedef enum {
+    I_DIVERROR      = 0,
+    I_NONMASKABLE   = 2,
+    I_BREAKPOINT    = 3,
+    I_INVALIDOP     = 6,
+    I_SEGNOTPRESENT = 11,
+    I_STACKSEGFAULT = 12,
+    I_GENPROTFAULT  = 13,
+    I_PAGEFAULT     = 14,
+    I_MACHINECHECK  = 18,
+} interrupt_t;
+
 typedef void (*isr_t)();
 void register_interrupt_handler(uint8_t n, isr_t handler);
+void print_isrs();
 
 extern void isr0();
 extern void isr1();
@@ -83,3 +96,4 @@ extern void irq15();
 
 void remap_pic();
 void timercallback(registers_t regs);
+void isr_init(void);

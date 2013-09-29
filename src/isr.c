@@ -2,18 +2,6 @@
 #include <isr.h>
 #include <timer.h>
 
-typedef enum {
-    I_DIVERROR      = 0,
-    I_NONMASKABLE   = 2,
-    I_BREAKPOINT    = 3,
-    I_INVALIDOP     = 4,
-    I_SEGNOTPRESENT = 11,
-    I_STACKSEGFAULT = 12,
-    I_GENPROTFAULT  = 13,
-    I_PAGEFAULT     = 14,
-    I_MACHINECHECK  = 18,
-} interrupt_t;
-
 isr_t interrupt_handlers[256];
 
 char* interrupt_description(uint8_t n) {
@@ -27,6 +15,8 @@ char* interrupt_description(uint8_t n) {
         case 13: return "General Protection Fault";
         case 14: return "Page Fault";
         case 18: return "Machine Check";
+        case 32: return "Timer";
+        case 33: return "Keyboard";
         default:
             if (n >= 32 && n <= 255)
                 return "User Defined Interrupt";
@@ -37,17 +27,36 @@ char* interrupt_description(uint8_t n) {
 
 void isr_handler(registers_t regs)
 {
-	puts("Recieved interrupt ");
+	puts("[isr_handler] Recieved interrupt ");
 	puts(interrupt_description(regs.int_no));
 	puts(" (");
 	puthex(regs.int_no);
 	puts(")");
 	puts("\n");
+
+	if(regs.int_no >= 40)
+	{
+		outb(0xA0, 0x20);
+	}
+
+	outb(0x20, 0x20);
+	if (interrupt_handlers[regs.int_no] != 0)
+	{
+		void (*handler)() = interrupt_handlers[regs.int_no];
+		handler(regs);
+	}
+
+    // Spin for the time being. Remove this when no longer debugging.
 	for(;;);
 }
 
 void register_interrupt_handler(uint8_t n, isr_t handler)
 {
+    puts("[isr]  Set handler for interrupt number ");
+    putdec(n);
+    puts(" to function at ");
+    puthex((uint32_t)handler);
+    puts("\n");
 	interrupt_handlers[n] = handler;
 }
 
@@ -70,7 +79,6 @@ void remap_pic()
 	outb(0xA1, 0x0);
 }
 
-
 void irq_handler(registers_t regs)
 {
 	if(regs.int_no >= 40)
@@ -84,4 +92,32 @@ void irq_handler(registers_t regs)
 		void (*handler)() = interrupt_handlers[regs.int_no];
 		handler(regs);
 	}
+}
+
+void invalid_opcode_handler(registers_t regs)
+{
+    puts("Invalid Opcode interrupt thrown (I_INVALIDOP).\n");
+    puts("EIP points to: ");
+    puthex(regs.eip);
+    puts("\n");
+    puthex(regs.eip);
+    puts(" contains: ");
+    puthex(*(uint32_t*)regs.eip);
+    puts("\n");
+}
+
+void isr_init(void) {
+    register_interrupt_handler(I_INVALIDOP, invalid_opcode_handler);
+}
+
+void print_isrs() {
+    int i, interrupts[] = { 0, 2, 3, 6, 11, 12, 13, 14, 18, 32, 33 };
+    for(i = 0; i < 11; i++) {
+        putdec(interrupts[i]);
+        puts(": ");
+        puthex((uint32_t*)interrupt_handlers[interrupts[i]]);
+        puts(" (");
+        puts(interrupt_description(interrupts[i]));
+        puts(")\n");
+    }
 }

@@ -47,22 +47,27 @@ void putc(char c)
 	if (c == '\n') {
 		cursor_x = 0;
 		cursor_y++;
-		move_cursor();
 		scroll();
+		move_cursor();
 		return;
-	} 
+	}
 	else if (c == '\b')
 	{
-		if(cursor_x > 0)
+	    if(cursor_x > 0) {
+            cursor_x--;
+            putc(' ');
+
 			cursor_x--;
-		move_cursor();
+            move_cursor();
+        }
+
 		return;
 	}
 	uint16_t attribute = attr << 8;
 	uint16_t *position = video + ( cursor_y * 80 + cursor_x);
 	*position = c | attribute;
 	if(cursor_x != 80) cursor_x++;
-	else 
+	else
 	{
 		cursor_x = 0;
 		cursor_y++;
@@ -74,7 +79,7 @@ void putc(char c)
 void puts(char *s)
 {
 	uint32_t i = 0;
-	while(s[i] != 0) 
+	while(s[i] != 0)
 	{
 		putc(s[i]);
 		i++;
@@ -92,6 +97,25 @@ void puthex(uint32_t hex)
 		putc(nybble_chars[(bytes[i] >> 4) & 0xF]);
 		putc(nybble_chars[bytes[i] & 0x0F]);
 	}
+}
+
+void putdec(uint32_t n) {
+    if (n == 0) {
+        putc('0');
+        return;
+    }
+
+    char buf[32];
+    int i = 0;
+
+    while(n > 0) {
+        buf[i] = (char)('0' + (n % 10));
+        n /= 10;
+        i++;
+    }
+
+    for (i = i - 1; i >= 0; i--)
+        putc(buf[i]);
 }
 
 

@@ -1,6 +1,6 @@
 #pragma once
-#pragma pack(1) 
-struct GDT 
+#pragma pack(1)
+struct GDT
 {
 	short limit_low;
 	short base_low;
@@ -40,4 +40,4 @@ enum {
 
 #define GDT_ENTRIES 256
 
-void gdtInit();
+void gdt_init();
