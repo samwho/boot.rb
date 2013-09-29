@@ -1,8 +1,8 @@
 #pragma once
 
-void keyboardInit();
-uint32_t readBuffer(int len, char *out); 
-char *readUntilReturn();
+void keyboard_init();
+uint32_t read_buffer(int len, char *out);
+char *read_until_return();
 
-#define fgets(s, size, stream) readBuffer(size, s)
+#define fgets(s, size, stream) read_buffer(size, s)
 int getchar();

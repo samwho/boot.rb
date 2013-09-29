@@ -8,7 +8,7 @@ void timer_callback(registers_t regs)
 	tick++;
 }
 
-void timerInit(uint32_t freq)
+void timer_init(uint32_t freq)
 {
 	register_interrupt_handler(IRQ0, timer_callback);
 

@@ -30,19 +30,19 @@ void kmain(void)
 	printf("Multiboot command line: %s \nMultiboot flags: 0x%x\n", mbd->cmdline, mbd->flags);
 
 	puts("Initalising GDT...");
-	gdtInit();
+	gdt_init();
 	puts("done.\n");
 
 	puts("Initalising IDT...");
-	idtInit();
+	idt_init();
 	puts("done.\n");
 
 	puts("Initialising PIT...");
-	timerInit(1);
+	timer_init(1);
 	puts("done.\n");
 
 	puts("Initialising keyboard...");
-	keyboardInit();
+	keyboard_init();
 	puts("done.\n");
 
 	puts("Initialising memory manager...");
@@ -59,7 +59,7 @@ void kmain(void)
 		puts("# ");
 
 		cmd = "";
-		cmd = readUntilReturn();
+		cmd = read_until_return();
 
 		if (strlen(cmd ) == 0)
 			continue;

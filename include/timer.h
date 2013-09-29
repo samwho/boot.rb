@@ -2,5 +2,5 @@
 #include <isr.h>
 #include <misc.h>
 
-void timerInit(uint32_t freq);
+void timer_init(uint32_t freq);
 void timer_callback(registers_t regs);

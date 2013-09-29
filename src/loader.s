@@ -2,7 +2,7 @@ global loader
 global magic
 global mbd
 
-global setGdt
+global set_gdt
 global reloadSegments
 global hang
 
@@ -37,7 +37,7 @@ loader:
 
 	dd 0
 
-setGdt:
+set_gdt:
 	push eax
 	mov eax, [esp + 0x8]
 	lgdt [eax]

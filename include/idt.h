@@ -26,8 +26,8 @@ struct idt_ptr {
 	uint32_t offset;
 };
 
-void idtSetGate(int num, int offset, int selector, int type);
-void idtInit();
+void idt_set_gate(int num, int offset, int selector, int type);
+void idt_init();
 
 extern void isr0();
 extern void isr1();
@@ -62,5 +62,3 @@ extern void isr29();
 extern void isr30();
 extern void isr31();
 extern void isr32();
-
-

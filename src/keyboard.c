@@ -21,13 +21,13 @@ void keyboard_handler(registers_t regs)
 	read_scancode();
 }
 
-void keyboardInit()
+void keyboard_init()
 {
 	memset(&buffer, 0, 256);
 	register_interrupt_handler(IRQ1, keyboard_handler);
 }
 
-uint32_t readBuffer(int len, char *out)
+uint32_t read_buffer(int len, char *out)
 {
 	if(buffer_pos != 0)
 	{
@@ -41,14 +41,14 @@ uint32_t readBuffer(int len, char *out)
 	return 0;
 }
 
-char *readUntilReturn()
+char *read_until_return()
 {
 	char *buff = "";
 	char currentChar = 0;
 	uint32_t i = 0;
 	while(currentChar != '\n')
 	{
-		if(readBuffer(1, &currentChar)) {
+		if(read_buffer(1, &currentChar)) {
 			if(currentChar != '\b') {
 				putc(currentChar);
 				buff[i] = currentChar;

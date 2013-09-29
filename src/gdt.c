@@ -1,7 +1,7 @@
 #include <gdt.h>
 #include <misc.h>
 
-extern void setGdt(struct gdt_ptr *);
+extern void set_gdt(struct gdt_ptr *);
 
 unsigned next_entry;
 struct GDT gdt[3];
@@ -20,7 +20,7 @@ void new_entry(int base, int limit, char access, char flags)
 }
 
 
-void gdtInit()
+void gdt_init()
 {
 /*	  initGDT[0] = struct GDT {.base=0, .limit=0, .type=0}; //Selector 0x00 is unusable
 	initGDT[1] = {.base=0x04000000, .limit=0x03ffffff, .type=0x9A}; //Selector 0x08 is code
@@ -39,8 +39,5 @@ void gdtInit()
 	struct gdt_ptr gdtp;
 	gdtp.limit = sizeof(struct GDT) * GDT_ENTRIES - 1;
 	gdtp.base = (unsigned int)&gdt;
-	setGdt(&gdtp);
-
+	set_gdt(&gdtp);
 }
-
-
