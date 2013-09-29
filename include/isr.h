@@ -17,6 +17,15 @@
 #define IRQ14 46
 #define IRQ15 47
 
+#define PIC1         0x20
+#define PIC2         0xA0
+#define PIC1_COMMAND 0x20
+#define PIC2_COMMAND 0xA0
+#define PIC1_DATA    0x21
+#define PIC2_DATA    0xA1
+#define PIC_EOI      0x20
+#define PIC_INIT     0x11
+
 #pragma pack(1)
 
 typedef struct registers
@@ -28,15 +37,27 @@ typedef struct registers
 } registers_t;
 
 typedef enum {
-    I_DIVERROR      = 0,
-    I_NONMASKABLE   = 2,
-    I_BREAKPOINT    = 3,
-    I_INVALIDOP     = 6,
-    I_SEGNOTPRESENT = 11,
-    I_STACKSEGFAULT = 12,
-    I_GENPROTFAULT  = 13,
-    I_PAGEFAULT     = 14,
-    I_MACHINECHECK  = 18,
+    I_DIV0ERROR        = 0,
+    I_DEBUGEXCEPTION   = 1,
+    I_NONMASKABLE      = 2,
+    I_BREAKPOINT       = 3,
+    I_IDOVERFLOW       = 4,
+    I_OUTOFBOUNDS      = 5,
+    I_INVALIDOP        = 6,
+    I_NOCOPROCESSOR    = 7,
+    I_DOUBLEFAULT      = 8,
+    I_COSEGMENTOVERRUN = 9,
+    I_BADTSS           = 10,
+    I_SEGNOTPRESENT    = 11,
+    I_STACKSEGFAULT    = 12,
+    I_GENPROTFAULT     = 13,
+    I_PAGEFAULT        = 14,
+    I_UNKNOWN          = 15,
+    I_COPROCESSORFAULT = 16,
+    I_ALIGNMENTCHECK   = 17,
+    I_MACHINECHECK     = 18,
+    I_TIMER            = 32,
+    I_KEYBOARD         = 33,
 } interrupt_t;
 
 typedef void (*isr_t)();

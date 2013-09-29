@@ -24,7 +24,7 @@ void keyboard_handler(registers_t regs)
 void keyboard_init()
 {
 	memset(&buffer, 0, 256);
-	register_interrupt_handler(IRQ1, keyboard_handler);
+	register_interrupt_handler(I_KEYBOARD, keyboard_handler);
 }
 
 uint32_t read_buffer(int len, char *out)

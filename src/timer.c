@@ -10,7 +10,7 @@ void timer_callback(registers_t regs)
 
 void timer_init(uint32_t freq)
 {
-	register_interrupt_handler(IRQ0, timer_callback);
+	register_interrupt_handler(I_TIMER, timer_callback);
 
 	uint32_t divisor = 1193180 / freq;
 

@@ -2,7 +2,7 @@
 %macro ISR_NOERRCODE 1
 	[GLOBAL isr%1]
 	isr%1:
-		cli	
+		cli
 		push byte 0
 		push byte %1
 		jmp isr_common_stub
@@ -48,9 +48,9 @@ ISR_NOERRCODE 28
 ISR_NOERRCODE 29
 ISR_NOERRCODE 30
 ISR_NOERRCODE 31
-ISR_NOERRCODE 32
 
 extern isr_handler
+global io_wait
 
 isr_common_stub:
    pusha                    ; Pushes edi,esi,ebp,esp,ebx,edx,ecx,eax
@@ -76,3 +76,6 @@ isr_common_stub:
    add esp, 8     ; C1eans up the pushed error code and pushed ISR number
    sti
    iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
+
+io_wait:
+   out 0x80, al ; Push a random byte to 0x80, which seems to be unused.
