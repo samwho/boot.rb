@@ -51,7 +51,7 @@ void kmain(void)
 	puts("[kern] keyboard_init() done.\n");
 
 	puts("[kern] mm_init() start...\n");
-	mm_init(0xDEADBEEF);
+	mm_init(0x60000000);
 	puts("[kern] mm_init() done.\n");
 
 	__asm__("sti");

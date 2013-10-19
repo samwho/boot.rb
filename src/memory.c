@@ -26,7 +26,7 @@ void print_mmap_info(multiboot_info_t *mbd)
 void print_mmap_entry(multiboot_info_t *mbd, uint32_t n)
 {
 	printf("ENTRY #%d\n", n);
-	if(mbd->flags & MULTIBOOT_INFO_MEM_MAP)	
+	if(mbd->flags & MULTIBOOT_INFO_MEM_MAP)
 	{
 		multiboot_memory_map_t *mmap = (multiboot_memory_map_t*)(mbd->mmap_addr + (mbd->mmap_length + sizeof(mbd->mmap_length))*n);
 		printf("Memory map base address: 0x%x%x\n", (uint32_t)mmap->addr >> 32, (uint32_t)mmap->addr & 0xfffffff);
@@ -52,7 +52,7 @@ void memcpy(void *dest, const void *src, int size)
 	{
 		d[i] = s[i];
 	}
-		
+
 }
 
 
@@ -113,14 +113,14 @@ struct block *find_order(unsigned int order, struct block *start)
 	else if(start->children[0] > -1)
 	{
 		struct block *child;
-		child = find_order(order, &(children[start->children[0]])); 
+		child = find_order(order, &(children[start->children[0]]));
 		if(child)
 			return child;
 
-		child = find_order(order, &(children[start->children[1]])); 
+		child = find_order(order, &(children[start->children[1]]));
 		if(child)
 			return child;
-	
+
 		return 0;
 	}
 	else if(start->order != 0)
@@ -136,8 +136,9 @@ struct block *find_order(unsigned int order, struct block *start)
 
 void *find_block(unsigned int size)
 {
-	//Okay, this is messy and annoying. Basically I work out how many times size
-	//goes into a minimum block, then figure out the log2 of that to get the order needed.
+    // Okay, this is messy and annoying. Basically I work out how many times size
+    // goes into a minimum block, then figure out the log2 of that to get the
+    // order needed.
 	int order_required = 0;
 	int size_temp = (size-1) / (BLOCK_MIN*1024);
 	if(size_temp != 0)
@@ -148,6 +149,7 @@ void *find_block(unsigned int size)
 			order_required++;
 		}
 	}
+
 	if(order_required == ORDER_LIMIT && top.free)
 		return top.addr;
 
@@ -159,8 +161,11 @@ void *find_block(unsigned int size)
 
 		return suitable_block->addr;
 	}
-	else
+
+	else {
+	    puts("[find_block] Unable to find a suitable block.\n");
 		return 0;
+    }
 }
 
 struct block *find_by_addr(void *addr, struct block *start)
@@ -188,8 +193,13 @@ struct block *find_by_addr(void *addr, struct block *start)
 
 void *malloc(unsigned int size)
 {
-	if(size > ((1 << ORDER_LIMIT) * BLOCK_MIN * 1024)) //Erp, it's too big!
+	if(size > ((1 << ORDER_LIMIT) * BLOCK_MIN * 1024)) {
+	    //Erp, it's too big!
+	    puts("[malloc] Asked for a block too large: ");
+	    putdec(size);
+	    puts(" bytes.\n");
 		return 0;
+    }
 
 	return (void*)((void**)find_block(size));
 }
@@ -217,7 +227,8 @@ void *realloc(void *ptr, size_t size)
 {
 	void *new = malloc(size);
 
-	// TODO: Determine how much to actually copy. `size` isn't it. Make cause pagefaults.
+    // TODO: Determine how much to actually copy. `size` isn't it. Make cause
+    // pagefaults.
 	memcpy(new, ptr, size);
 
 	free(ptr);
