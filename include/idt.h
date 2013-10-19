@@ -4,21 +4,26 @@
 
 #define IDT_ENTRIES 256
 
+/*
+ * For more details on this struct, go here:
+ *
+ *   http://wiki.osdev.org/Interrupt_Descriptor_Table#Structure
+ */
 struct IDT
 {
-	uint16_t offset_low;
-	uint16_t selector;
-	uint8_t zero;
-	uint8_t type_attr;
-	uint16_t offset_high;
+	uint16_t offset_low;  // Offset bits 0..15
+	uint16_t selector;    // A code segment selector in GDT or LDT
+	uint8_t  zero;        // Unused
+	uint8_t  type_attr;   // What type of gate this is
+	uint16_t offset_high; // Offset bits 16..31
 };
 
 enum {
-	IDT_TASK_GATE_32 = 0x5,
+	IDT_TASK_GATE_32      = 0x5,
 	IDT_INTERRUPT_GATE_16 = 0x6,
-	IDT_TRAP_GATE_16 = 0x7,
+	IDT_TRAP_GATE_16      = 0x7,
 	IDT_INTERRUPT_GATE_32 = 0xE,
-	IDT_TRAP_GATE_32 = 0xF
+	IDT_TRAP_GATE_32      = 0xF
 };
 
 struct idt_ptr {
@@ -29,6 +34,7 @@ struct idt_ptr {
 void idt_set_gate(int num, int offset, int selector, int type);
 void idt_init();
 
+// Defined in src/asmisr.s
 extern void isr0();
 extern void isr1();
 extern void isr2();

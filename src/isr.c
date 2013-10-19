@@ -49,25 +49,20 @@ void isr_handler(registers_t regs)
 	if (interrupt_handlers[regs.int_no] != 0) {
 		interrupt_handlers[regs.int_no]();
     } else {
-        puts("[isr_handler] Recieved interrupt without handler: ");
-        puts(interrupt_description(regs.int_no));
-        puts(" (");
-        puthex(regs.int_no);
-        puts(")");
-        puts("\n");
+        LOG("Received interrupt without handler: %s (%x)",
+                interrupt_description(regs.int_no), regs.int_no);
     }
 
     // Spin for the time being. Remove this when no longer debugging.
+    LOG("Spinning after interrupt. Restart required.");
 	for(;;);
 }
 
 void register_interrupt_handler(uint8_t n, isr_t handler)
 {
-    puts("[isr]  Set handler for interrupt number ");
-    putdec(n);
-    puts(" to function at ");
-    puthex((uint32_t)handler);
-    puts("\n");
+    LOG("Set handler for interrupt [%s] to function at 0x%08x",
+            interrupt_description(n), (unsigned int)handler);
+
 	interrupt_handlers[n] = handler;
 }
 
@@ -128,14 +123,7 @@ void irq_handler(registers_t regs)
 
 void invalid_opcode_handler(registers_t regs)
 {
-    puts("Invalid Opcode interrupt thrown (I_INVALIDOP).\n");
-    puts("EIP points to: ");
-    puthex(regs.eip);
-    puts("\n");
-    puthex(regs.eip);
-    puts(" contains: ");
-    puthex(*(uint32_t*)regs.eip);
-    puts("\n");
+    LOG("EIP: 0x%08x (0x%08x)", regs.eip, *(uint32_t*)regs.eip);
 }
 
 void isr_init(void)
@@ -149,11 +137,9 @@ void print_isrs()
     int i, interrupts[] = { 0, 2, 3, 6, 11, 12, 13, 14, 18, 32, 33 };
 
     for(i = 0; i < 11; i++) {
-        putdec(interrupts[i]);
-        puts(": ");
-        puthex((uint32_t)interrupt_handlers[interrupts[i]]);
-        puts(" (");
-        puts(interrupt_description(interrupts[i]));
-        puts(")\n");
+        int int_num = interrupts[i];
+
+        printf("%d: 0x%08x (%s)\n", int_num, (unsigned int)interrupt_handlers[int_num],
+                interrupt_description(int_num));
     }
 }

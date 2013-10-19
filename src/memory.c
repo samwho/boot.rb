@@ -163,7 +163,7 @@ void *find_block(unsigned int size)
 	}
 
 	else {
-	    puts("[find_block] Unable to find a suitable block.\n");
+	    LOG("Unable to find suitable block.");
 		return 0;
     }
 }
@@ -191,13 +191,11 @@ struct block *find_by_addr(void *addr, struct block *start)
 }
 
 
-void *malloc(unsigned int size)
+void *malloc(size_t size)
 {
 	if(size > ((1 << ORDER_LIMIT) * BLOCK_MIN * 1024)) {
 	    //Erp, it's too big!
-	    puts("[malloc] Asked for a block too large: ");
-	    putdec(size);
-	    puts(" bytes.\n");
+	    LOG("Asked for block too large: %d bytes", (unsigned int)size);
 		return 0;
     }
 

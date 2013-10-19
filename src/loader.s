@@ -9,6 +9,9 @@ global hang
 extern kmain
 
 ; Multiboot header
+;
+; More information:
+;   https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#OS-image-format
 MODULEALIGN equ 1 << 0
 MEMINFO		equ 1 << 1
 FLAGS		equ MODULEALIGN | MEMINFO

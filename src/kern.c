@@ -25,34 +25,34 @@ void kmain(void)
 
 	cls();
 
-	puts("[kern] Welcome to Kernel!\n");
+	LOG("Welcome to Kernel!");
 
-	printf("[kern] Multiboot command line: %s\n", mbd->cmdline);
-    printf("[kern] Multiboot flags: 0x%x\n", mbd->flags);
+	LOG("Multiboot command line: %d", mbd->cmdline);
+    LOG("Multiboot flags: 0x%x", mbd->flags);
 
-	puts("[kern] gdt_init() start...\n");
+	LOG("gdt_init() start...");
 	gdt_init();
-	puts("[kern] gdt_init() done.\n");
+	LOG("gdt_init() done.");
 
-	puts("[kern] idt_init() start ...\n");
+	LOG("idt_init() start...");
 	idt_init();
-	puts("[kern] idt_init() done.\n");
+	LOG("idt_init() done.");
 
-	puts("[kern] isr_init() start...\n");
+	LOG("isr_init() start...");
 	isr_init();
-	puts("[kern] isr_init() done.\n");
+	LOG("isr_init() done.");
 
-	puts("[kern] timer_init() start...\n");
+	LOG("timer_init() start...");
 	timer_init(1);
-	puts("[kern] timer_init() done.\n");
+	LOG("timer_init() done.");
 
-	puts("[kern] keyboard_init() start...\n");
+	LOG("keyboard_init() start...");
 	keyboard_init();
-	puts("[kern] keyboard_init() done.\n");
+	LOG("keyboard_init() done.");
 
-	puts("[kern] mm_init() start...\n");
-	mm_init(0x60000000);
-	puts("[kern] mm_init() done.\n");
+	LOG("mm_init() start...");
+	mm_init((void*)0x60000000);
+	LOG("mm_init() done.");
 
 	__asm__("sti");
 
@@ -85,11 +85,11 @@ printisrs - Prints the full ISR table.\n\
 		else if (strcmp(cmd, "reset") == 0)
 			outb(0x64, 0xFE);
 		else if (strcmp(cmd, "malloc") == 0)
-			printf("Mallocing one 4k block: 0x%x\n", malloc(4096));
+			printf("Mallocing one 4k block: 0x%x\n", (unsigned int)malloc(4096));
 		else if (strcmp(cmd, "memreset") == 0)
 		{
 			printf("Resetting heap.\n");
-			mm_init(0xDEADBEEF);
+			mm_init((void*)0xDEADBEEF);
 		}
 		else if (strcmp(cmd, "mmap") == 0)
 		{

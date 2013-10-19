@@ -1,10 +1,10 @@
-;; From jamesmo1loy
+; From http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html
 %macro ISR_NOERRCODE 1
 	[GLOBAL isr%1]
 	isr%1:
 		cli
-		push byte 0
-		push byte %1
+		push byte 0  ; No error code, stub this value
+		push byte %1 ; Push the interrupt number for later
 		jmp isr_common_stub
 %endmacro
 
@@ -12,10 +12,13 @@
 	[GLOBAL isr%1]
 	isr%1:
 		cli
-		push byte %1
+		push byte %1 ; Push the interrupt number for later, error code has
+                     ; already been pushed for us
 		jmp isr_common_stub
 %endmacro
 
+; For a descriptio of what each of these interrupt numbers mean, see
+; include/isr.h
 ISR_NOERRCODE 0
 ISR_NOERRCODE 1
 ISR_NOERRCODE 2
@@ -72,7 +75,7 @@ isr_common_stub:
    mov fs, ax
    mov gs, ax
 
-   popa                     ; Pops edi,esi,ebp...
+   popa           ; Pops edi,esi,ebp...
    add esp, 8     ; C1eans up the pushed error code and pushed ISR number
    sti
    iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP

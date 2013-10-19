@@ -1,10 +1,10 @@
 %macro IRQ 2
-	global irq%1
-	irq%1:
-		cli
-		push byte 0
-		push byte %2
-		jmp irq_common_stub
+  global irq%1
+  irq%1:
+    cli          ; We don't want interrupts interrupting interrupts.
+    push byte 0  ; IRQs have no error code, so we stub this value.
+    push byte %2 ; Push the IRQ number so we can identify it later.
+    jmp irq_common_stub
 %endmacro
 
 IRQ 0, 32

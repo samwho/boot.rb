@@ -86,39 +86,6 @@ void puts(char *s)
 	}
 }
 
-
-static const char nybble_chars[] = "0123456789ABCDEF";
-void puthex(uint32_t hex)
-{
-	puts("0x");
-	uint8_t *bytes = (uint8_t *)&hex;
-	for(int i = 3; i >= 0; i--)
-	{
-		putc(nybble_chars[(bytes[i] >> 4) & 0xF]);
-		putc(nybble_chars[bytes[i] & 0x0F]);
-	}
-}
-
-void putdec(uint32_t n) {
-    if (n == 0) {
-        putc('0');
-        return;
-    }
-
-    char buf[32];
-    int i = 0;
-
-    while(n > 0) {
-        buf[i] = (char)('0' + (n % 10));
-        n /= 10;
-        i++;
-    }
-
-    for (i = i - 1; i >= 0; i--)
-        putc(buf[i]);
-}
-
-
 // TODO: Is this even remotely correct?
 size_t fwrite(const void *ptr, size_t size, size_t nmemb,
                      FILE *stream)
