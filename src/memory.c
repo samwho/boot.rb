@@ -8,7 +8,7 @@ void print_mmap_info(multiboot_info_t *mbd)
 	{
 		multiboot_memory_map_t *mmap = (multiboot_memory_map_t*)(mbd->mmap_addr);
 		int i = 1;
-		while(mmap < mbd->mmap_addr + mbd->mmap_length)
+		while(mmap < (mbd->mmap_addr + mbd->mmap_length))
 		{
 			printf("ENTRY #%d:\n", i);
 			printf("Memory map base address: 0x%x%x\n", (uint32_t)mmap->addr >> 32, (uint32_t)mmap->addr & 0xfffffff);

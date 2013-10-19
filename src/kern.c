@@ -66,7 +66,7 @@ void kmain(void)
 		cmd = "";
 		cmd = read_until_return();
 
-		if (strlen(cmd ) == 0)
+		if (strlen(cmd) == 0)
 			continue;
 		else if (strcmp(cmd, "help") == 0)
 			printf(
@@ -111,6 +111,4 @@ printisrs - Prints the full ISR table.\n\
 	}
 
 	for(;;);
-
 }
-

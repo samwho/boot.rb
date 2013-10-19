@@ -7,9 +7,9 @@
 
 // BEGIN CHEATING
 
-#define stderr (-1)
-#define stdin  (-1)
-#define stdout (-1)
+#define stderr ((FILE*)-1)
+#define stdin  ((FILE*)-1)
+#define stdout ((FILE*)-1)
 
 // Hack because all of boot.rb expects putc(c), but ruby expects putc(c, stream).
 #define putc(c, ...) putc(c)
@@ -22,8 +22,7 @@ typedef uint32_t FILE;
 
 #define EOF (-1)
 
-size_t fwrite(const void *ptr, size_t size, size_t nmemb,
-                     FILE *stream);
+size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
 
 // END CHEATING
 

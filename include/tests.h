@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <setjmp.h>
-#include <tests.h>
 
 static int examples = 0,
            failed   = 0;

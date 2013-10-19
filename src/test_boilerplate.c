@@ -18,12 +18,12 @@ void __run_test(TestResult* (*ptr)())
 {
 	TestResult *ret = ptr();
 
-printf("0x%x\n", *(ret->name));
-printf("0x%x\n", *(ret->file));
+/* printf("0x%x\n", *(ret->name)); */
+/* printf("0x%x\n", *(ret->file)); */
 
-printf("%s\n", ret->name);
-printf("%s\n", ret->file);
-printf("%i\n", ret->line);
+/* printf("%s\n", ret->name); */
+/* printf("%s\n", ret->file); */
+/* printf("%i\n", ret->line); */
 
 	examples++;
 
