@@ -1,5 +1,6 @@
 #include <test.h>
 #include <test/setjmp.h>
+#include <test/math.h>
 
 static int examples = 0,
            failed   = 0,
@@ -15,6 +16,7 @@ void _add_test(test_function t) {
 
 void test_init() {
     test_setjmp_init();
+    test_math_init();
 }
 
 void run_tests() {
@@ -55,7 +57,7 @@ void run_tests() {
 		failure = failures;
 
 		do {
-			printf("%s:%i %s", failure->file, failure->line, failure->name);
+			printf("%s:%i %s\n", failure->file, failure->line, failure->name);
 		} while ((failure = failure->next));
 
 		puts("\n\n");

@@ -51,7 +51,7 @@ void kmain(void)
 	LOG("keyboard_init() done.");
 
 	LOG("mm_init() start...");
-	mm_init((void*)0x60000000);
+	mm_init((void*)0x00200000);
 	LOG("mm_init() done.");
 
 	__asm__("sti");

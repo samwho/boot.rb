@@ -13,11 +13,11 @@ TEST(setjmp) //{
 	int res = setjmp(env);
 
 	if (res > 1)
-		TEST_RETURN(EXIT_SUCCESS);
+		pass();
 
 	test_setjmp_pt2(env, res);
 
-	TEST_RETURN(EXIT_FAILURE);
+	fail();
 }
 
 void test_setjmp_init() {
