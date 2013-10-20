@@ -14,17 +14,15 @@ ASFLAGS := -felf32 -g
 
 all: os.iso
 
-tools/bootinfo: tools/bootinfo.c
-	cc -o $@ $<
-
 qemu: os.iso
 	@$(QEMU) -cdrom os.iso -monitor stdio
 
-os.iso: kernel.bin tools/bootinfo
+os.iso: kernel.bin
 	@mkdir -p isofs/System
 	cp $< isofs/System
-	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -input-charset utf-8 -o $@ isofs
-	./tools/bootinfo isofs/boot/grub/stage2_eltorito os.iso
+	cp isofs/boot/grub/stage2_eltorito isofs/boot/grub/stage2_eltorito.copy
+	mkisofs -R -b boot/grub/stage2_eltorito.copy -no-emul-boot -boot-load-size 4 -boot-info-table -input-charset utf-8 -o $@ isofs
+	rm isofs/boot/grub/stage2_eltorito.copy
 
 # Ew.
 kernel.bin: generate-kernel-irb-file ${OBJFILES} mruby kernel.bin-real
@@ -32,7 +30,7 @@ kernel.bin-real: ${OBJFILES}
 	${LD} ${LDFLAGS} -T src/linker.ld -o kernel.bin $^ $(shell find 'mruby/build/boot.rb' -name '*.o')
 
 %.o: %.c @${CC} ${CFLAGS} -MMD -MP -MT "$*.d $*.o"	-c $< -o $@
-%.o: %.asm @${ASM} ${ASFLAGS} -o $@ $<
+%.o: %.s @${AS} ${ASFLAGS} -o $@ $<
 
 generate-kernel-irb-file:
 	git submodule update --init && ./generate-kernel-irb-file.sh
