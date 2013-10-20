@@ -174,7 +174,7 @@ struct block *find_by_addr(void *addr, struct block *start)
 	{
 		if(start->children[0] == -1)
 		{
-			printf("Found a suitable block: 0x%x", start);
+			/* LOG("Found a suitable block: 0x%x", start); */
 			return start;
 		}
 		else

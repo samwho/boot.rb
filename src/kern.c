@@ -8,7 +8,7 @@
 #include <keyboard.h>
 #include <text.h>
 #include <memory.h>
-#include <tests.h>
+#include <test.h>
 
 extern int mirb_main(int argc, char **argv);
 
@@ -55,6 +55,10 @@ void kmain(void)
 	LOG("mm_init() done.");
 
 	__asm__("sti");
+
+    LOG("test_init() start...");
+    test_init();
+    LOG("test_init() done.");
 
 	run_tests();
 

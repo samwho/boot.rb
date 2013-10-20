@@ -4,7 +4,8 @@ LD := ld
 QEMU := qemu-system-i386
 SOURCE_SUFFIXES := '(' -name '*.c' -o -name '*.s' ')'
 SRCFILES  := $(shell find 'src' ${SOURCE_SUFFIXES})
-OBJFILES := $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCFILES)))
+TESTFILES  := $(shell find 'src/test' ${SOURCE_SUFFIXES})
+OBJFILES := $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCFILES) $(TESTFILES)))
 CFLAGS := -std=c99 -Wall -nostdinc -ffreestanding  -fno-stack-protector -fno-builtin -g -Iinclude -Imruby/include -m32 -O0 -mno-sse -Wextra
 LDFLAGS := -nostdlib -g -melf_i386
 ASFLAGS := -felf32 -g

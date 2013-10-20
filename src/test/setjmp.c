@@ -1,4 +1,4 @@
-#include <tests.h>
+#include <test.h>
 
 void test_setjmp_pt2(jmp_buf env, int res)
 {
@@ -20,4 +20,6 @@ TEST(setjmp) //{
 	TEST_RETURN(EXIT_FAILURE);
 }
 
-test(_(setjmp));
+void test_setjmp_init() {
+    add_test(setjmp);
+}
