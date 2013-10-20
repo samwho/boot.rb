@@ -21,7 +21,5 @@ TEST(setjmp) //{
 }
 
 void test_setjmp_init() {
-    // There's something wrong with this test. It jumps into nowhere. Disabled
-    // for the time being.
-    /* add_test(setjmp); */
+    add_test(setjmp);
 }
