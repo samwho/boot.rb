@@ -72,7 +72,7 @@ int m_printn(OUT char *str, IN size_t maxlength, IN int len, IN unsigned int n,
 	if (sign)
 		str[len++] = sign;
 
-	/* Write any zeros to satisfy the precision. */ 
+	/* Write any zeros to satisfy the precision. */
 	while ((int)i < precision--)
 		if (len < maxlen)
 			str[len++] = '0';
@@ -140,11 +140,11 @@ int sprintf(OUT char *str, IN const char *fmt, ...)
 {
 	va_list args;
 	int i;
-	
+
 	va_start(args, fmt);
 	i = vsnprintf(str, 0, fmt, args);
 	va_end(args);
-	
+
 	va_start(args, fmt);
 	i = vsnprintf(str, (size_t)i+1, fmt, args);
 	va_end(args);
@@ -156,7 +156,7 @@ int snprintf(OUT char *str, IN size_t size, IN const char *fmt, ...)
 {
 	va_list args;
 	int i;
-	
+
 	va_start(args, fmt);
 	i = vsnprintf(str, size, fmt, args);
 	va_end(args);
@@ -171,7 +171,7 @@ int vprintf(IN const char *fmt, va_list ap)
 	char str[1024];
 #endif
 	int len, i = 0;
-	
+
 #ifdef PRINTF_USE_MM
 	len = vsnprintf(NULL, 0, fmt, ap);
 	str = malloc(len+1);
@@ -193,7 +193,7 @@ int vprintf(IN const char *fmt, va_list ap)
 int vsprintf(OUT char *str, IN const char *fmt, va_list ap)
 {
 	int i;
-	
+
 	i = vsnprintf(str, 0, fmt, ap);
 	i = vsnprintf(str, (size_t)i+1, fmt, ap);
 	return i;
@@ -299,6 +299,11 @@ reset:
 		case 'X':
 			len = m_printn(str, size, len,
 				       va_arg(ap, unsigned int), 16,
+				       fieldwidth, flags, precision);
+			break;
+		case 'b':
+			len = m_printn(str, size, len,
+				       va_arg(ap, unsigned int), 2,
 				       fieldwidth, flags, precision);
 			break;
 		case 'c':

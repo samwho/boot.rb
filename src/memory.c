@@ -2,38 +2,60 @@
 
 struct block top;
 struct block children[1 << ORDER_LIMIT];
+
+/*
+ * Scans the GRUB multiboot memory map to find the first usable range of memory
+ * for our operating system (preferably one that does not start at 0x0).
+ */
+multiboot_memory_map_t *first_available_memory_range(multiboot_info_t *mbd) {
+	if(mbd->flags & MULTIBOOT_INFO_MEM_MAP)
+	{
+		multiboot_memory_map_t *mmap = (multiboot_memory_map_t*)(mbd->mmap_addr);
+
+		int i = 1;
+		while((unsigned int)mmap < (mbd->mmap_addr + mbd->mmap_length))
+		{
+		    if ((mmap->addr >> 32) + (mmap->addr & 0xffffffff) != 0) {
+                if (mmap->type == MULTIBOOT_MEMORY_AVAILABLE) {
+                    return mmap;
+                }
+            }
+
+			mmap = (multiboot_memory_map_t *)((unsigned int)mmap + mmap->size +
+			        sizeof(mmap->size));
+			i++;
+		}
+
+		return NULL;
+	} else {
+	    LOG("mmap information is not available");
+    }
+}
+
 void print_mmap_info(multiboot_info_t *mbd)
 {
 	if(mbd->flags & MULTIBOOT_INFO_MEM_MAP)
 	{
 		multiboot_memory_map_t *mmap = (multiboot_memory_map_t*)(mbd->mmap_addr);
+
 		int i = 1;
-		while(mmap < (mbd->mmap_addr + mbd->mmap_length))
+		while((unsigned int)mmap < (mbd->mmap_addr + mbd->mmap_length))
 		{
-			printf("ENTRY #%d:\n", i);
-			printf("Memory map base address: 0x%x%x\n", (uint32_t)mmap->addr >> 32, (uint32_t)mmap->addr & 0xfffffff);
-			printf("Memory map length: 0x%x%x\n", (uint32_t)mmap->len >> 32, (uint32_t)mmap->len & 0xffffffff);
-			printf("Memory map size: 0x%x\n", mmap->size);
-			printf("Memory map type: 0x%x\n", mmap->type);
-			mmap = (multiboot_memory_map_t *) ((unsigned int)mmap + mmap->size + sizeof(mmap->size));
+			printf("[mmap %d] base: 0x%x%x, length: 0x%x%x, type: %s\n",
+			        i,
+			        (unsigned int)(mmap->addr >> 32),
+			        (unsigned int)(mmap->addr & 0xffffffff),
+			        (unsigned int)(mmap->len >> 32),
+			        (unsigned int)(mmap->len & 0xffffffff),
+			        mmap->type == 0x1 ? "available" : "reserved");
+
+			mmap = (multiboot_memory_map_t *)((unsigned int)mmap + mmap->size +
+			        sizeof(mmap->size));
 			i++;
 		}
-
-		printf("Got %d mmap entries\n", i);
-	}
-}
-
-void print_mmap_entry(multiboot_info_t *mbd, uint32_t n)
-{
-	printf("ENTRY #%d\n", n);
-	if(mbd->flags & MULTIBOOT_INFO_MEM_MAP)
-	{
-		multiboot_memory_map_t *mmap = (multiboot_memory_map_t*)(mbd->mmap_addr + (mbd->mmap_length + sizeof(mbd->mmap_length))*n);
-		printf("Memory map base address: 0x%x%x\n", (uint32_t)mmap->addr >> 32, (uint32_t)mmap->addr & 0xfffffff);
-		printf("Memory map length: 0x%x%x\n", (uint32_t)mmap->len >> 32, (uint32_t)mmap->len & 0xffffffff);
-		printf("Memory map size: 0x%x\n", mmap->size);
-		printf("Memory map type: %s\n", mmap->type == 1 ? "AVAILABLE" : "RESERVED");
-	}
+	} else {
+	    LOG("mmap information is not available");
+    }
 }
 
 void memset(void *ptr, char val, int size)
@@ -55,13 +77,13 @@ void memcpy(void *dest, const void *src, int size)
 
 }
 
-
 struct block top;
 struct block children[1 << ORDER_LIMIT];
 
-
 void mm_init(void *memstart)
 {
+    LOG("Setting start of memory to 0x%08x", (unsigned int)memstart);
+
 	top.addr = memstart;
 	top.order = ORDER_LIMIT;
 	top.parent = 0;

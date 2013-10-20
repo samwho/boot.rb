@@ -11,24 +11,30 @@ SECTIONS
 
     .text ALIGN (0x1000) :
     {
+        _TEXT_START = .;
 		*(.text)
+        _TEXT_END = .;
     }
 
     .rodata ALIGN (0x1000) :
     {
+        _RODATA_START = .;
         *(.rodata*)
+        _RODATA_END = .;
     }
 
     .data ALIGN (0x1000) :
     {
+        _DATA_START = .;
         *(.data)
+        _DATA_END = .;
     }
 
     .bss :
     {
-        sbss = .;
+        _BSS_START = .;
         *(COMMON)
         *(.bss)
-        ebss = .;
+        _BSS_END = .;
     }
 }

@@ -28,10 +28,10 @@ void test_init();
 	memset(ret, 0, sizeof(TestResult));           \
 	ret->line = __LINE__;                         \
                                                   \
-	ret->file = malloc(strlen(name));             \
+	ret->file = malloc(strlen(__FILE__) + 1);     \
 	strcpy(ret->file, __FILE__);                  \
                                                   \
-	ret->name = malloc(strlen(name));             \
+	ret->name = malloc(strlen(name) + 1);         \
 	strcpy(ret->name, name);                      \
                                                   \
     ret->prev = NULL;                             \

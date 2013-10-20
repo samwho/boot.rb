@@ -18,49 +18,40 @@ void kmain(void)
 
 	extern multiboot_info_t *mbd;
 
-	if (magic != 0x2BADB002)
+	if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
 	{
-		/* Something went wrong. Should abort. Or something */
+		PANIC("Multiboot magic number is wrong: %08x", magic);
 	}
 
 	cls();
 
-	LOG("Welcome to Kernel!");
+    if (mbd->flags & MULTIBOOT_INFO_CMDLINE) {
+        printf("[mbd] cmdline: %s\n", (char*)mbd->cmdline);
+    }
 
-	LOG("Multiboot command line: %d", mbd->cmdline);
-    LOG("Multiboot flags: 0x%x", mbd->flags);
+	if (mbd->flags & MULTIBOOT_INFO_MEMORY) {
+        printf("[mbd] mem_lower: %dkb\n", (unsigned)mbd->mem_lower);
+        printf("[mbd] mem_upper: %dkb\n", (unsigned)mbd->mem_upper);
+    }
 
-	LOG("gdt_init() start...");
+    if (mbd->flags & MULTIBOOT_INFO_MEM_MAP){
+        print_mmap_info(mbd);
+    }
+
 	gdt_init();
-	LOG("gdt_init() done.");
-
-	LOG("idt_init() start...");
 	idt_init();
-	LOG("idt_init() done.");
-
-	LOG("isr_init() start...");
 	isr_init();
-	LOG("isr_init() done.");
-
-	LOG("timer_init() start...");
 	timer_init(1);
-	LOG("timer_init() done.");
-
-	LOG("keyboard_init() start...");
 	keyboard_init();
-	LOG("keyboard_init() done.");
 
-	LOG("mm_init() start...");
-	mm_init((void*)0x00200000);
-	LOG("mm_init() done.");
+    // TODO: We'll need a way of checking we aren't going outside the
+    // available range.
+    mm_init(KERNEL_END);
 
 	__asm__("sti");
 
-    LOG("test_init() start...");
     test_init();
-    LOG("test_init() done.");
-
-	run_tests();
+	/* run_tests(); */
 
 	char *cmd = "";
 	while(1)
@@ -80,7 +71,7 @@ test      - A useful test.\n\
 reset     - Resets the CPU.\n\
 malloc    - Allocate a 4k block of RAM.\n\
 memreset  - Reset the heap.\n\
-mmap      - Print a memory map.\n\
+mmap      - Print the memory map from GRUB.\n\
 irb       - Open an mruby terminal.\n\
 printisrs - Prints the full ISR table.\n\
 ");
@@ -97,8 +88,7 @@ printisrs - Prints the full ISR table.\n\
 		}
 		else if (strcmp(cmd, "mmap") == 0)
 		{
-			printf("mmap no. %c\n", cmd[5]);
-			print_mmap_entry(mbd, cmd[5] - 48);
+			print_mmap_info(mbd);
 			puts("\n");
 		}
 		else if (strcmp(cmd, "irb") == 0)

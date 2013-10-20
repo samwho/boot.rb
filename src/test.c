@@ -56,9 +56,12 @@ void run_tests() {
 
 		failure = failures;
 
-		do {
+		while(failure) {
 			printf("%s:%i %s\n", failure->file, failure->line, failure->name);
-		} while ((failure = failure->next));
+			TestResult* to_free = failure;
+		    failure = failure->next;
+		    free(to_free);
+		}
 
 		puts("\n\n");
     }
