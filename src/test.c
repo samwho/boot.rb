@@ -17,6 +17,7 @@ void _add_test(test_function t) {
 void test_init() {
     test_setjmp_init();
     test_math_init();
+    test_memory_init();
 }
 
 void run_tests() {
@@ -57,7 +58,14 @@ void run_tests() {
 		failure = failures;
 
 		while(failure) {
-			printf("%s:%i %s\n", failure->file, failure->line, failure->name);
+		    if (failure->message != NULL) {
+                printf("%s:%i %s -> %s\n", failure->file, failure->line,
+                    failure->name, failure->message);
+            } else {
+                printf("%s:%i %s\n", failure->file, failure->line,
+                    failure->name);
+            }
+
 			TestResult* to_free = failure;
 		    failure = failure->next;
 		    free(to_free);

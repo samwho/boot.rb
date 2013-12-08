@@ -17,7 +17,7 @@ TEST(setjmp) //{
 
 	test_setjmp_pt2(env, res);
 
-	fail();
+	fail("Didn't jump to where we should have done!");
 }
 
 void test_setjmp_init() {

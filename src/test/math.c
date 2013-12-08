@@ -5,7 +5,7 @@ TEST(abs)
     if (abs(-1) == 1) {
         pass();
     } else {
-        fail();
+        fail(NULL);
     }
 }
 

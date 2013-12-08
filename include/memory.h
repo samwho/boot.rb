@@ -28,8 +28,13 @@ extern void _TEXT_END;
  * End linker script variables
  */
 
-#define BLOCK_MIN 4 // Smallest block is 4k
-#define ORDER_LIMIT 10  // Largest allocatable block is 2^ORDER_LIMIT * BLOCK_MIN. ORDER_LIMIT of 10 makes 4096k
+// Smallest block is 4k
+#define BLOCK_MIN 4
+
+// Largest allocatable block is 2^ORDER_LIMIT * BLOCK_MIN. ORDER_LIMIT of 10
+// makes 4096k
+#define ORDER_LIMIT 10
+
 struct block
 {
 	void *addr;

@@ -82,14 +82,22 @@ struct block children[1 << ORDER_LIMIT];
 
 void mm_init(void *memstart)
 {
+    if ((uint32_t)memstart % (BLOCK_MIN * 1024) != 0) {
+        LOG("Specified memstart is not block aligned: 0x%08x", memstart);
+
+        memstart = memstart - ((uint32_t)memstart % (BLOCK_MIN * 1024)) +
+            (BLOCK_MIN * 1024);
+    }
+
     LOG("Setting start of memory to 0x%08x", (unsigned int)memstart);
 
-	top.addr = memstart;
-	top.order = ORDER_LIMIT;
-	top.parent = 0;
+	top.addr        = memstart;
+	top.order       = ORDER_LIMIT;
+	top.parent      = 0;
 	top.children[0] = -1;
 	top.children[1] = -1;
-	top.free = 1;
+	top.free        = 1;
+
 	memset(children, 0, (1<<ORDER_LIMIT) * sizeof(struct block));
 }
 
@@ -195,10 +203,7 @@ struct block *find_by_addr(void *addr, struct block *start)
 	if(start->addr == addr)
 	{
 		if(start->children[0] == -1)
-		{
-			/* LOG("Found a suitable block: 0x%x", start); */
 			return start;
-		}
 		else
 			return find_by_addr(addr, &(children[start->children[0]]));
 	}
@@ -226,8 +231,20 @@ void *malloc(size_t size)
 
 void free(void *ptr)
 {
-	if(ptr < top.addr || ptr > (top.addr + (1 << ORDER_LIMIT) * BLOCK_MIN * 1024) || (unsigned int)ptr % 4096 != 0) //Invalid address
+    uint32_t out_of_range = ptr < top.addr ||
+        ptr > (top.addr + (1 << ORDER_LIMIT) * BLOCK_MIN * 1024);
+    uint32_t misaligned = ((unsigned int)ptr % 4096) != 0;
+
+    if (out_of_range) {
+        LOG("Address 0x%08x is out of range", ptr);
 		return;
+    }
+
+    if (misaligned) {
+        LOG("Address 0x%08x is not aligned properly", ptr);
+        return;
+    }
+
 	struct block *blk = find_by_addr(ptr, &top);
 	int otherpos = ~(blk->pos | 0xFFFFFFFE); // Lol bit twiddling. This makes sure that blk->pos is filled with 1's except for the LSB, which is the one we're interested in.
 	if(children[blk->parent->children[otherpos]].free)

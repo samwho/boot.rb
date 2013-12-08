@@ -8,10 +8,11 @@
 typedef struct TestResult {
   struct TestResult *prev;
   struct TestResult *next;
-  int value;
-  char *name;
-  char *file;
-  int line;
+  int    value;
+  char   *name;
+  char   *file;
+  char   *message;
+  int    line;
 } TestResult;
 
 typedef TestResult* (*test_function)();
@@ -23,7 +24,7 @@ void test_init();
 #define TEST(fn_name) \
     TestResult * __test_##fn_name() { char *name = #fn_name;
 
-#define TEST_RETURN(return_value) {               \
+#define TEST_RETURN(return_value, msg) {          \
 	TestResult *ret = malloc(sizeof(TestResult)); \
 	memset(ret, 0, sizeof(TestResult));           \
 	ret->line = __LINE__;                         \
@@ -37,13 +38,18 @@ void test_init();
     ret->prev = NULL;                             \
     ret->next = NULL;                             \
                                                   \
+    if (msg != NULL) {                            \
+      ret->message = malloc(strlen(msg) + 1);     \
+      strcpy(ret->message, msg);                  \
+    }                                             \
+                                                  \
 	ret->value = return_value;                    \
 	                                              \
 	return ret;                                   \
 }
 
 /* #define add_test(fn) _add_test(__test_##fn) */
-#define pass() TEST_RETURN(EXIT_SUCCESS)
-#define fail() TEST_RETURN(EXIT_FAILURE)
+#define pass()        TEST_RETURN(EXIT_SUCCESS, NULL)
+#define fail(message) TEST_RETURN(EXIT_FAILURE, message)
 
 #endif
